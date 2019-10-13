@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+}
+
+group 'cs'
+version '1.0-SNAPSHOT'
+
+def javafx_version = '12.0.2'
+
+sourceCompatibility = 1.11
+
+mainClassName = 'app.Launcher'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "${javafx_version}"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ] //wtv modules u need
+}
+
+dependencies {
+    testCompile group: "org.testfx", name: "testfx-core", version: "4.0.15-alpha"
+    testCompile group: "org.testfx", name: "testfx-junit5", version: "4.0.15-alpha"
+    testCompile group: "org.junit.jupiter", name:"junit-jupiter", version:"5.4.2"
+    compile group: 'org.apfloat', name: 'apfloat', version: '1.9.1'
+
+    //mac dependencies
+    compile "org.openjfx:javafx-base:${javafx_version}:mac"
+    compile "org.openjfx:javafx-graphics:${javafx_version}:mac"
+    compile "org.openjfx:javafx-controls:${javafx_version}:mac"
+    compile "org.openjfx:javafx-fxml:${javafx_version}:mac"
+    compile "org.openjfx:javafx-swing:${javafx_version}:mac"
+
+    //windows dependencies
+    compile "org.openjfx:javafx-base:${javafx_version}:win"
+    compile "org.openjfx:javafx-graphics:${javafx_version}:win"
+    compile "org.openjfx:javafx-controls:${javafx_version}:win"
+    compile "org.openjfx:javafx-fxml:${javafx_version}:win"
+    compile "org.openjfx:javafx-swing:${javafx_version}:win"
+
+    //linux dependencies
+    compile "org.openjfx:javafx-base:${javafx_version}:linux"
+    compile "org.openjfx:javafx-graphics:${javafx_version}:linux"
+    compile "org.openjfx:javafx-controls:${javafx_version}:linux"
+    compile "org.openjfx:javafx-fxml:${javafx_version}:linux"
+    compile "org.openjfx:javafx-swing:${javafx_version}:linux"
+}
+
+shadowJar {
+    baseName = 'elestrostatics-sim'
+}
