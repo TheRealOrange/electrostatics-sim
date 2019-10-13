@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
@@ -21,6 +22,7 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
@@ -31,36 +33,43 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="Resolution Threshold" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <TextField fx:id="resolutionthreshold" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <TextField fx:id="roughprecisionadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-      <TextField fx:id="finestepadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-      <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label GridPane.columnIndex="1" GridPane.rowIndex="11" />
-      <Label text="Low Resolution" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-      <Label text="High Resolution" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-      <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+      <TextField fx:id="roughprecisionadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+      <TextField fx:id="finestepadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
+      <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <Label GridPane.columnIndex="1" GridPane.rowIndex="12" />
+      <Label text="Low Resolution" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+      <Label text="High Resolution" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+      <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="13" />
       <Slider fx:id="resolutionthreshold_slider" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Slider fx:id="fineprecisionadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-      <Slider fx:id="finestepadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-      <TextField fx:id="roughstepadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-      <TextField fx:id="fineprecisionadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Slider fx:id="roughprecisionadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="11" />
-      <Slider fx:id="roughstepadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="12" />
-      <Slider fx:id="roughstep_slider" GridPane.columnIndex="3" GridPane.rowIndex="13" />
-      <Slider fx:id="finestep_slider" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-      <TextField fx:id="finestep" layoutX="196.0" layoutY="159.0" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
-      <TextField fx:id="roughstep" layoutX="196.0" layoutY="185.0" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
-      <Label layoutX="78.0" layoutY="163.0" text="Step Size" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-      <Label layoutX="78.0" layoutY="319.0" text="Step Size" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="9" />
-      <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
+      <Slider fx:id="fineprecisionadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+      <Slider fx:id="finestepadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <TextField fx:id="roughstepadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
+      <TextField fx:id="fineprecisionadaptive" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+      <Slider fx:id="roughprecisionadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="12" />
+      <Slider fx:id="roughstepadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="13" />
+      <Slider fx:id="roughstep_slider" GridPane.columnIndex="3" GridPane.rowIndex="14" />
+      <Slider fx:id="finestep_slider" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+      <TextField fx:id="finestep" layoutX="196.0" layoutY="159.0" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+      <TextField fx:id="roughstep" layoutX="196.0" layoutY="185.0" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="14" />
+      <Label layoutX="78.0" layoutY="163.0" text="Step Size" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+      <Label layoutX="78.0" layoutY="319.0" text="Step Size" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+      <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+      <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" />
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
       <Label text="Electric Field Render Parameters" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Button fx:id="cancelButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#cancelClicked" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
+      <Button fx:id="applyButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#applyClicked" text="Apply" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
+      <Label text="Step Count" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextField fx:id="stepcount" layoutX="219.0" layoutY="85.0" maxHeight="20.0" maxWidth="50.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Slider fx:id="stepcount_slider" layoutX="274.0" layoutY="88.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
    </children>
 </GridPane>

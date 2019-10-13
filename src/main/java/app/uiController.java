@@ -172,7 +172,7 @@ public class uiController {
 
     @FXML
     void efieldParams(MouseEvent event) {
-
+        App.controller.activate("field");
     }
 
     @FXML
@@ -256,7 +256,7 @@ public class uiController {
             }
         });
 
-        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(1.6, 160, 1.6, 1.6);
+        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 1.6, 1.6);
 
         chargeval.setValueFactory(factory);
 

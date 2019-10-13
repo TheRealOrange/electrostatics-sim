@@ -21,6 +21,7 @@ public class App extends Application {
 
         controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml")));
         controller.addScreen("splash", FXMLLoader.load(getClass().getResource("/splash.fxml")));
+        controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml")));
 
         controller.activate("gui");
 
