@@ -11,10 +11,12 @@ public class Field extends Polyline {
     }
 
     public void draw() {
-        System.out.println("drawing");
-        for (Vector2D pt : efl.getPoints()) {
-            super.getPoints().addAll(pt.getX(), pt.getY());
-            //System.out.printf("%f, y: %f\n", pt.getX(), pt.getY());
+        synchronized (super.getPoints()) {
+            System.out.println("drawing");
+            for (Vector2D pt : efl.getPoints()) {
+                super.getPoints().addAll(pt.getX(), pt.getY());
+                //System.out.printf("%f, y: %f\n", pt.getX(), pt.getY());
+            }
         }
     }
 }

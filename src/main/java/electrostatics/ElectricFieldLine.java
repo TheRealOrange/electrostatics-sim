@@ -7,7 +7,7 @@ import math.Vector2D;
 import java.util.function.Function;
 
 public class ElectricFieldLine extends FieldLine implements Runnable {
-    private static double fine_compute_distance = 100;
+    private static int fine_compute_distance = 100;
 
     private static double fine_precision_adaptive = 0.1;
     private static double fine_step_adaptive = 0.1;
@@ -17,7 +17,7 @@ public class ElectricFieldLine extends FieldLine implements Runnable {
     private static double fine_step = 0.1;
     private static double rough_step = 50;
 
-    private static int num_steps = 50000;
+    private static int num_steps = 10000;
 
     private Function<Vector2D, Boolean> func;
     private int numsteps;
@@ -105,7 +105,7 @@ public class ElectricFieldLine extends FieldLine implements Runnable {
         return fine_compute_distance;
     }
 
-    public static void setFine_compute_distance(double fine_compute_distance) {
+    public static void setFine_compute_distance(int fine_compute_distance) {
         ElectricFieldLine.fine_compute_distance = fine_compute_distance;
     }
 

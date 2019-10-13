@@ -41,15 +41,9 @@ public class RungeKutta {
             Vector2D n = new Vector2D(0,0);
             for (int j = 0; j < i; ++j) n = n.add(k[j].mul(coefficients[i-1][j]));
 
-            //System.out.println(h);
-            //System.out.println(n.mul(h));
-            //System.out.println(curr);
-
             k[i] = this.func.apply(t + nodes[i] * h, curr.add(n.mul(h)));
             sum = sum.add(k[i].mul(weights[i]));
         }
-        //for (Vector2D v : k) System.out.print(v+ " ");
-        System.out.println(" ");
 
         return curr.add(sum.mul(h));
     }

@@ -36,6 +36,9 @@ public class uiController {
     private AnimationTimer timer;
 
     private boolean ismoving;
+    private boolean updating;
+
+    private boolean render;
 
     @FXML
     private ResourceBundle resources;
@@ -135,7 +138,7 @@ public class uiController {
 
     @FXML
     void addCharge(MouseEvent event) {
-        if (!ismoving) {
+        if (!ismoving && !updating) {
             Particle p = new Particle(chargeval.getValue(), Double.parseDouble(radiusval.getText()), new Vector2D(0, 0));
             Charge charge = new Charge(p);
             App.model.addCharge(p);
@@ -148,8 +151,10 @@ public class uiController {
                     ismoving = false;
                     App.model.moveParticle(charge.getCharge(), charge.getPos());
                     System.out.printf("x: %f, y: %f\n", charge.getPos().getX(), charge.getPos().getY());
-                    compute();
-                    display();
+                    if (render) {
+                        compute();
+                        display();
+                    }
                 } else if (!ismoving) {
                     charge.setMove(true);
                     ismoving = true;
@@ -197,7 +202,7 @@ public class uiController {
 
     @FXML
     void toggleRender(MouseEvent event) {
-
+        render = !render;
     }
 
     @FXML
@@ -237,6 +242,8 @@ public class uiController {
         assert ufieldsolver != null : "fx:id=\"ufieldsolver\" was not injected: check your FXML file 'gui.fxml'.";
         assert ufieldparams != null : "fx:id=\"ufieldparams\" was not injected: check your FXML file 'gui.fxml'.";
         assert language != null : "fx:id=\"language\" was not injected: check your FXML file 'gui.fxml'.";
+        App.model = new SystemModel();
+
 
         String methods[] = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
 
@@ -248,6 +255,8 @@ public class uiController {
             }
         });
 
+        efieldsolver.getSelectionModel().select(5);
+
         ufieldsolver.setItems(FXCollections.observableArrayList(methods));
         ufieldsolver.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 11) {
@@ -255,6 +264,8 @@ public class uiController {
                 App.model.setUfieldsolver(selectSolver(App.model::solvePotential, new_value.intValue()));
             }
         });
+
+        ufieldsolver.getSelectionModel().select(5);
 
         SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 1.6, 1.6);
 
@@ -281,11 +292,12 @@ public class uiController {
         TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 10.0, filter);
         radiusval.setTextFormatter(textFormatter);
 
-        App.model = new SystemModel();
         ismoving = false;
 
         this.potentiallines = new ArrayList<>();
         this.fieldlines = new ArrayList<>();
+        this.updating = false;
+        this.render = true;
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
@@ -329,14 +341,17 @@ public class uiController {
     }
 
     void compute() {
+        this.updating = true;
         try {
             App.model.compute();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        this.updating = false;
     }
 
     void display() {
+        this.updating = true;
         for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
         for (Field p : this.fieldlines) canvas.getChildren().remove(p);
 
@@ -356,5 +371,6 @@ public class uiController {
             f.draw();
             fieldlines.add(f);
         }
+        this.updating = false;
     }
 }
