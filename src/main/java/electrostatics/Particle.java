@@ -68,13 +68,13 @@ public class Particle implements Cloneable, Serializable {
 
     public Vector2D field(Vector2D position) {
         Vector2D dist = position.sub(this.position);
-        Apfloat r = dist.fast_magnitude();
+        Apfloat r = dist.magnitude();
         Vector2D field = dist.div(ApfloatMath.pow(r, 3)).mul(this.charge);
         return field;
     }
 
     public Apfloat potential(Vector2D position) {
-        return charge.divide(position.sub(this.position).fast_magnitude());
+        return charge.divide(position.sub(this.position).magnitude());
     }
 
     public Particle clone() {

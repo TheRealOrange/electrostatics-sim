@@ -20,7 +20,7 @@ public class ElectricFieldLine extends FieldLine {
     private static Apfloat fine_step = new Apfloat(25, Constants.getPrecision());
     private static Apfloat rough_step = new Apfloat(100, Constants.getPrecision());
 
-    private static int num_steps = 1000000;
+    private static int num_steps = 50000;
 
     private Function<Vector2D, Boolean> func;
     private int numsteps;

@@ -16,6 +16,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
+import math.Constants;
+import org.apfloat.Apfloat;
 
 public class efieldparamController {
 
@@ -130,7 +132,7 @@ public class efieldparamController {
         StringConverter<Double> fine = new StringConverter<>() {
             @Override
             public Double fromString(String s) {
-                if (s.isEmpty() || ".".equals(s) || Double.parseDouble(s) < 0.01 || Double.parseDouble(s) > 50) return 1.0;
+                if (s.isEmpty() || ".".equals(s) || Double.parseDouble(s) < 0.1 || Double.parseDouble(s) > 100) return 25.0;
                 else return Double.valueOf(s);
             }
             @Override
@@ -140,7 +142,7 @@ public class efieldparamController {
         StringConverter<Double> rough = new StringConverter<>() {
             @Override
             public Double fromString(String s) {
-                if (s.isEmpty() || ".".equals(s) || Double.parseDouble(s) < 0.01 || Double.parseDouble(s) > 500) return 50.0;
+                if (s.isEmpty() || ".".equals(s) || Double.parseDouble(s) < 0.1 || Double.parseDouble(s) > 1000) return 100.0;
                 else return Double.valueOf(s);
             }
             @Override
@@ -150,7 +152,7 @@ public class efieldparamController {
         StringConverter<Integer> integer1 = new StringConverter<>() {
             @Override
             public Integer fromString(String s) {
-                if (s.isEmpty() || Integer.parseInt(s) < 1 || Integer.parseInt(s) > 50000) return 1000;
+                if (s.isEmpty() || Integer.parseInt(s) < 1 || Integer.parseInt(s) > 100000) return 1000;
                 else return Integer.valueOf(s);
             }
             @Override
@@ -167,29 +169,29 @@ public class efieldparamController {
             public String toString(Integer d) { return d.toString(); }
         };
 
-        resolutionthreshold.setTextFormatter(new TextFormatter<Integer>(integer2, 100, filterInt));
+        resolutionthreshold.setTextFormatter(new TextFormatter<Integer>(integer2, 1000, filterInt));
         stepcount.setTextFormatter(new TextFormatter<Integer>(integer1, 1000, filterInt));
 
-        fineprecisionadaptive.setTextFormatter(new TextFormatter<Double>(fine, 1.0, filter));
+        fineprecisionadaptive.setTextFormatter(new TextFormatter<Double>(fine, 0.5, filter));
         finestepadaptive.setTextFormatter(new TextFormatter<Double>(fine, 1.0, filter));
 
-        finestep.setTextFormatter(new TextFormatter<Double>(fine, 1.0, filter));
+        finestep.setTextFormatter(new TextFormatter<Double>(fine, 25.0, filter));
 
-        roughprecisionadaptive.setTextFormatter(new TextFormatter<Double>(rough, 50.0, filter));
-        roughstepadaptive.setTextFormatter(new TextFormatter<Double>(rough, 50.0, filter));
+        roughprecisionadaptive.setTextFormatter(new TextFormatter<Double>(rough, 10.0, filter));
+        roughstepadaptive.setTextFormatter(new TextFormatter<Double>(rough, 10.0, filter));
 
-        roughstep.setTextFormatter(new TextFormatter<Double>(rough, 50.0, filter));
+        roughstep.setTextFormatter(new TextFormatter<Double>(rough, 100.0, filter));
 
         initSliderInt(resolutionthreshold_slider, 1, 5000, 1);
-        initSliderInt(stepcount_slider, 1, 50000, 1);
+        initSliderInt(stepcount_slider, 1, 100000, 1);
 
-        initSlider(fineprecisionadaptive_slider, 0.01, 50, 0.01);
-        initSlider(finestepadaptive_slider, 0.01, 50, 0.01);
-        initSlider(finestep_slider, 0.01, 50, 0.01);
+        initSlider(fineprecisionadaptive_slider, 0.1, 100, 0.1);
+        initSlider(finestepadaptive_slider, 0.1, 100, 0.1);
+        initSlider(finestep_slider, 0.1, 100, 0.1);
 
-        initSlider(roughprecisionadaptive_slider, 0.01, 500, 0.01);
-        initSlider(roughstepadaptive_slider, 0.01, 500, 0.01);
-        initSlider(roughstep_slider, 0.01, 500, 0.01);
+        initSlider(roughprecisionadaptive_slider, 0.1, 1000, 0.1);
+        initSlider(roughstepadaptive_slider, 0.1, 1000, 0.1);
+        initSlider(roughstep_slider, 0.1, 1000, 0.1);
 
         bindInt(resolutionthreshold, resolutionthreshold_slider);
         bindInt(stepcount, stepcount_slider);
@@ -202,16 +204,16 @@ public class efieldparamController {
         bind(roughstepadaptive, roughstepadaptive_slider);
         bind(roughstep, roughstep_slider);
 
-        resolutionthreshold_slider.setValue(100);
+        resolutionthreshold_slider.setValue(1000);
         stepcount_slider.setValue(10000);
 
-        fineprecisionadaptive_slider.setValue(0.1);
-        finestepadaptive_slider.setValue(0.1);
-        finestep_slider.setValue(0.1);
+        fineprecisionadaptive_slider.setValue(0.5);
+        finestepadaptive_slider.setValue(1);
+        finestep_slider.setValue(25);
 
         roughprecisionadaptive_slider.setValue(10);
-        roughstepadaptive_slider.setValue(30);
-        roughstep_slider.setValue(50);
+        roughstepadaptive_slider.setValue(10);
+        roughstep_slider.setValue(100);
 
         updateFields();
     }
@@ -234,7 +236,7 @@ public class efieldparamController {
 
     void bind(TextField tf, Slider s) {
         tf.setOnAction(e->s.setValue(Double.parseDouble(tf.getText())));
-        s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%.2f", n)));
+        s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%.1f", n)));
     }
 
     void bindInt(TextField tf, Slider s) {
@@ -242,16 +244,16 @@ public class efieldparamController {
         s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%d", n.intValue())));
     }
 
-    void updateFields() {/*
+    void updateFields() {
         ElectricFieldLine.setFine_compute_distance((int)resolutionthreshold_slider.getValue());
         ElectricFieldLine.setNum_steps((int)stepcount_slider.getValue());
 
-        ElectricFieldLine.setFine_precision_adaptive(fineprecisionadaptive_slider.getValue());
-        ElectricFieldLine.setFine_step_adaptive(finestepadaptive_slider.getValue());
-        ElectricFieldLine.setFine_step(finestep_slider.getValue());
+        ElectricFieldLine.setFine_precision_adaptive(new Apfloat(fineprecisionadaptive_slider.getValue(), Constants.getPrecision()));
+        ElectricFieldLine.setFine_step_adaptive(new Apfloat(finestepadaptive_slider.getValue(), Constants.getPrecision()));
+        ElectricFieldLine.setFine_step(new Apfloat(finestep_slider.getValue(), Constants.getPrecision()));
 
-        ElectricFieldLine.setRough_precision_adaptive(roughstepadaptive_slider.getValue());
-        ElectricFieldLine.setRough_step_adaptive(roughstepadaptive_slider.getValue());
-        ElectricFieldLine.setRough_step(roughstep_slider.getValue());*/
+        ElectricFieldLine.setRough_precision_adaptive(new Apfloat(roughprecisionadaptive_slider.getValue(), Constants.getPrecision()));
+        ElectricFieldLine.setRough_step_adaptive(new Apfloat(roughstepadaptive_slider.getValue(), Constants.getPrecision()));
+        ElectricFieldLine.setRough_step(new Apfloat(roughstep_slider.getValue(), Constants.getPrecision()));
     }
 }

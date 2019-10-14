@@ -4,6 +4,7 @@ import math.Constants;
 import math.RungeKutta;
 import math.Vector2D;
 import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +51,8 @@ public class SystemModel {
 
     public Particle getParticleAt(Vector2D pos) {
         for (Particle p : this.charges) {
-            if (p.getPosition().sub(pos).magnitude().doubleValue() < p.getRadius()) return p;
+            Vector2D dist = p.getPosition().sub(pos);
+            if (ApfloatMath.pow(dist.getX(), 2).add(ApfloatMath.pow(dist.getY(), 2)).doubleValue() < Math.pow(p.getRadius(), 2)) return p;
         }
         return null;
     }
@@ -60,14 +62,16 @@ public class SystemModel {
         for (Particle p : this.charges) {
             //System.out.printf("x: %f, y: %f\n", p.getPosition().getX(), p.getPosition().getY());
             if (p == charge) continue;
-            if (p.getPosition().sub(pos).magnitude().compareTo(new Apfloat(p.getRadius() + charge.getRadius() + 2)) <= 0) return true;
+            Vector2D dist = p.getPosition().sub(pos);
+            if (ApfloatMath.pow(dist.getX(), 2).add(ApfloatMath.pow(dist.getY(), 2)).compareTo(new Apfloat(Math.pow(p.getRadius() + charge.getRadius() + 2, 2))) <= 0) return true;
         }
         return false;
     }
 
     public boolean checkCollision(Vector2D pos) {
         for (Particle p : this.charges) {
-            if (p.getPosition().sub(pos).magnitude().doubleValue() <= p.getRadius()) return true;
+            Vector2D dist = p.getPosition().sub(pos);
+            if (ApfloatMath.pow(dist.getX(), 2).add(ApfloatMath.pow(dist.getY(), 2)).doubleValue() <= Math.pow(p.getRadius(), 2)) return true;
         }
         return false;
     }
