@@ -1,7 +1,9 @@
 package electrostatics;
 
+import math.Constants;
 import math.RungeKutta;
 import math.Vector2D;
+import org.apfloat.Apfloat;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +36,7 @@ public class SystemModel {
     }
 
     public SystemModel() {
-        this(new ArrayList<Particle>(), new Vector2D(0, 0), null, null);
+        this(new ArrayList<Particle>(), new Vector2D(), null, null);
     }
 
     public void compute() throws InterruptedException, ExecutionException {
@@ -48,7 +50,7 @@ public class SystemModel {
 
     public Particle getParticleAt(Vector2D pos) {
         for (Particle p : this.charges) {
-            if (p.getPosition().sub(pos).magnitude() < p.getRadius()) return p;
+            if (p.getPosition().sub(pos).magnitude().doubleValue() < p.getRadius()) return p;
         }
         return null;
     }
@@ -58,14 +60,14 @@ public class SystemModel {
         for (Particle p : this.charges) {
             //System.out.printf("x: %f, y: %f\n", p.getPosition().getX(), p.getPosition().getY());
             if (p == charge) continue;
-            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + charge.getRadius())) return true;
+            if (p.getPosition().sub(pos).magnitude().compareTo(new Apfloat(p.getRadius() + charge.getRadius() + 2)) <= 0) return true;
         }
         return false;
     }
 
     public boolean checkCollision(Vector2D pos) {
         for (Particle p : this.charges) {
-            if (p.getPosition().sub(pos).magnitude() <= p.getRadius()) return true;
+            if (p.getPosition().sub(pos).magnitude().doubleValue() <= p.getRadius()) return true;
         }
         return false;
     }
@@ -78,26 +80,26 @@ public class SystemModel {
     }
 
     public Vector2D field(Vector2D position) {
-        Vector2D e = new Vector2D(0, 0);
+        Vector2D e = new Vector2D();
         for (Particle p : this.charges) e = e.add(p.field(position));
         //System.out.println(e);
         return e;
     }
 
-    public double potential(Vector2D position) {
-        double u = 0;
-        for (Particle p : this.charges) u += p.potential(position);
+    public Apfloat potential(Vector2D position) {
+        Apfloat u = new Apfloat(0, Constants.getPrecision());
+        for (Particle p : this.charges) u = u.add(p.potential(position));
         return u;
     }
 
-    public Vector2D solveField(double t, Vector2D position) {
+    public Vector2D solveField(Apfloat t, Vector2D position) {
         return field(position);
     }
 
-    public Vector2D solvePotential(double t, Vector2D position) {
+    public Vector2D solvePotential(Apfloat t, Vector2D position) {
         Vector2D field = field(position);
-        double x = field.getX();
-        field.setX(-field.getY());
+        Apfloat x = field.getX();
+        field.setX(field.getY().negate());
         field.setY(x);
         return field.unit();
     }
@@ -143,7 +145,7 @@ public class SystemModel {
     }
 
     public void addCharge(Vector2D pos, double radius, double charge) {
-        this.charges.add(new Particle(charge, radius, pos.clone()));
+        this.charges.add(new Particle(new Apfloat(charge), radius, pos.clone()));
     }
 
     public void addCharge(Particle p) {
