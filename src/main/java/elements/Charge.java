@@ -45,8 +45,5 @@ public class Charge extends Circle implements CanvasNode {
     @Override
     public void reposition(Vector2D prevOffset, Vector2D offset) {
         movable.setCoords(movable.getCoords().sub(prevOffset).add(offset));
-        System.out.println(App.model.findID(charge).getPosition());
-        App.model.moveParticle(charge, movable.getCoords());
-        System.out.println(App.model.findID(charge).getPosition());
     }
 }

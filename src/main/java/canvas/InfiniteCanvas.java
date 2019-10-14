@@ -27,6 +27,6 @@ public class InfiniteCanvas extends AnchorPane {
   }
 
   public InfiniteCanvas() {
-    this(10);
+    this(100);
   }
 }

@@ -4,20 +4,21 @@ import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-public class ElectricFieldLine extends FieldLine implements Runnable {
-    private static int fine_compute_distance = 100;
+public class ElectricFieldLine extends FieldLine {
+    private static int fine_compute_distance = 1000;
 
-    private static double fine_precision_adaptive = 0.01;
-    private static double fine_step_adaptive = 0.01;
-    private static double rough_step_adaptive = 1;
-    private static double rough_precision_adaptive = 1;
+    private static double fine_precision_adaptive = 0.5;
+    private static double fine_step_adaptive = 0.5;
+    private static double rough_step_adaptive = 5;
+    private static double rough_precision_adaptive = 5;
 
-    private static double fine_step = 0.01;
-    private static double rough_step = 5;
+    private static double fine_step = 50;
+    private static double rough_step = 250;
 
-    private static int num_steps = 1000000;
+    private static int num_steps = 10000;
 
     private Function<Vector2D, Boolean> func;
     private int numsteps;
@@ -32,12 +33,12 @@ public class ElectricFieldLine extends FieldLine implements Runnable {
 
     private Particle charge;
 
-    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Boolean> func, int linenum) {
-        this(charge, start, solver, func, linenum, num_steps, rough_precision_adaptive, rough_step_adaptive);
+    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Boolean> func, CompletableFuture<Void> future, int linenum) {
+        this(charge, start, solver, func, future, linenum, num_steps, rough_precision_adaptive, rough_step_adaptive);
     }
 
-    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Boolean> func, int linenum, int numsteps, double precision, double maxstep) {
-        super(start, solver);
+    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Boolean> func, CompletableFuture<Void> future, int linenum, int numsteps, double precision, double maxstep) {
+        super(start, solver, future);
         this.func = func;
         this.numsteps = numsteps;
         this.precision = precision;
@@ -57,24 +58,28 @@ public class ElectricFieldLine extends FieldLine implements Runnable {
 
         double[] nextstep = new double[]{this.step[0]};
 
-        for (int i = 0;i < this.numsteps;++i) {
+        for (int i = 0; i < this.numsteps; ++i) {
             dist = start.sub(point).magnitude() * unit;
 
             if (solver instanceof AdaptiveRungeKutta) {
-                this.precision = (dist<fine_compute_distance)?fine_precision_adaptive:rough_precision_adaptive;
-                this.maxstep = (dist<fine_compute_distance)?fine_step_adaptive:rough_step_adaptive;
-                ((AdaptiveRungeKutta)solver).setMaxstep(maxstep);
-            } else this.step[0] = (dist<fine_compute_distance)?fine_step:rough_step;
+                this.precision = (dist < fine_compute_distance) ? fine_precision_adaptive : rough_precision_adaptive;
+                this.maxstep = (dist < fine_compute_distance) ? fine_step_adaptive : rough_step_adaptive;
+                ((AdaptiveRungeKutta) solver).setMaxstep(maxstep);
+            } else this.step[0] = (dist < fine_compute_distance) ? fine_step : rough_step;
 
             point = solver.step(point, t, step, nextstep, precision);
             add(point);
             //System.out.println(point);
 
-            if (this.func.apply(point)) { end = point.clone(); break; }
+            if (this.func.apply(point)) {
+                end = point.clone();
+                break;
+            }
 
             t += step[0];
             if (solver instanceof AdaptiveRungeKutta) step[0] = nextstep[0];
         }
+        super.future.complete(null);
     }
 
     public int getLinenum() {

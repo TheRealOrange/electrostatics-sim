@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -325,7 +326,7 @@ public class uiController {
         this.updating = true;
         try {
             App.model.compute();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         this.updating = false;

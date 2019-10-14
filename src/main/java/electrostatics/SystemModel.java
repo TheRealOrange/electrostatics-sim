@@ -4,6 +4,7 @@ import math.RungeKutta;
 import math.Vector2D;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -26,8 +27,8 @@ public class SystemModel {
         this.efieldsolver = efieldsolver;
         this.ufieldsolver = ufieldsolver;
         this.potentialint = 10;
-        this.linedensity = 4;
-        this.threadpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(100);
+        this.linedensity = 1;
+        this.threadpool = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
         this.efield = new ElectricField(this.threadpool, this.charges, this.efieldsolver, this::checkCollision, this.linedensity);
         this.ufield = new PotentialField(this.threadpool, this.charges, this.ufieldsolver, this::potential, null, this.potentialint);
     }
@@ -36,15 +37,13 @@ public class SystemModel {
         this(new ArrayList<Particle>(), new Vector2D(0, 0), null, null);
     }
 
-    public void compute() throws InterruptedException {
+    public void compute() throws InterruptedException, ExecutionException {
         this.efield = new ElectricField(this.threadpool, charges, this.efieldsolver, this::checkCollision, this.linedensity);
-        this.efield.compute();
-        while(this.threadpool.getActiveCount() > 0);
+        this.efield.compute().get();
         ArrayList<ElectricFieldLine> lines = new ArrayList<>();
-        for (FieldLine fl : this.efield.getLines()) lines.add((ElectricFieldLine)fl);
+        for (FieldLine fl : this.efield.getLines()) lines.add((ElectricFieldLine) fl);
         this.ufield = new PotentialField(this.threadpool, charges, this.ufieldsolver, this::potential, lines, this.potentialint);
-        this.ufield.compute();
-        while(this.threadpool.getActiveCount() > 0);
+        this.ufield.compute().get();
     }
 
     public Particle getParticleAt(Vector2D pos) {
@@ -58,8 +57,8 @@ public class SystemModel {
         charge = findID(charge);
         for (Particle p : this.charges) {
             //System.out.printf("x: %f, y: %f\n", p.getPosition().getX(), p.getPosition().getY());
-            if (p==charge) continue;
-            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius()+charge.getRadius())) return true;
+            if (p == charge) continue;
+            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + charge.getRadius())) return true;
         }
         return false;
     }
@@ -158,7 +157,7 @@ public class SystemModel {
 
     public ArrayList<PotentialFieldLine> getPotentialLines() {
         ArrayList<PotentialFieldLine> lines = new ArrayList<>();
-        for (FieldLine pfl : this.ufield.getLines()) lines.add((PotentialFieldLine)pfl);
+        for (FieldLine pfl : this.ufield.getLines()) lines.add((PotentialFieldLine) pfl);
         return lines;
     }
 

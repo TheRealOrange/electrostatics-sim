@@ -4,7 +4,9 @@ import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
 
-public class PotentialFieldLine extends FieldLine implements Runnable {
+import java.util.concurrent.CompletableFuture;
+
+public class PotentialFieldLine extends FieldLine {
     private static int num_steps_adaptive = 8000;
     private static double step_amt_adaptive = 0.001;
 
@@ -19,8 +21,8 @@ public class PotentialFieldLine extends FieldLine implements Runnable {
     private int numsteps;
     private double[] step;
 
-    public PotentialFieldLine(Vector2D start, RungeKutta solver, double potential, Vector2D wcenter) {
-        super(start, solver);
+    public PotentialFieldLine(Vector2D start, RungeKutta solver, CompletableFuture<Void> future, double potential, Vector2D wcenter) {
+        super(start, solver, future);
         this.potential = potential;
         this.wcenter = wcenter;
         this.numsteps = (solver instanceof AdaptiveRungeKutta)?num_steps_adaptive:num_steps;
@@ -48,6 +50,8 @@ public class PotentialFieldLine extends FieldLine implements Runnable {
             dist = start.sub(point).magnitude();
             if (dist * unit < 6. && t > 2.*dist) { add(start); wcenter = wcenter.div(t); break; }
         }
+
+        super.future.complete(null);
     }
 
     public static int getNum_steps_adaptive() {
