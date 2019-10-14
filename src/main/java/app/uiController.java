@@ -321,28 +321,6 @@ public class uiController {
         return null;
     }
 
-    void updateChargePosition() {
-        for (Charge c : charges) {
-            //c.setPos(c.getCharge().getPosition().sub(App.model.getOrigin()).mul(scaling));
-        }
-    }
-
-    public Vector2D collision(Vector2D pos) {
-        final Bounds bounds = App.controller.getScreen("gui").localToScreen(App.controller.getScreen("gui").getBoundsInLocal());
-        if (Math.abs(bounds.getMinX()-pos.getX()) < 10 || Math.abs(bounds.getMinY()-pos.getY()) < 10 || Math.abs(bounds.getMaxX()-pos.getX()) < 10 || Math.abs(bounds.getMaxY()-pos.getY()) < 10) {
-            return pos.div(pos.magnitude());
-        }
-        return null;
-    }
-
-    public Point normalizedMousePos() {
-        Point p = MouseInfo.getPointerInfo().getLocation();
-        Bounds bounds = App.controller.getScreen("gui").localToScreen(App.controller.getScreen("gui").getBoundsInLocal());
-        p.setLocation((p.getX() < bounds.getMinX()+10)?10:p.getX()-bounds.getMinX(),(p.getY() < bounds.getMinY()+10)?10:p.getY()-bounds.getMinY());
-        p.setLocation((p.getX() > bounds.getWidth()-10)?bounds.getWidth()-10:p.getX(),(p.getY() > bounds.getHeight()-10)?bounds.getHeight()-10:p.getY());
-        return p;
-    }
-
     void compute() {
         this.updating = true;
         try {
