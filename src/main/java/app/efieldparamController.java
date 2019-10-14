@@ -242,7 +242,7 @@ public class efieldparamController {
         s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%d", n.intValue())));
     }
 
-    void updateFields() {
+    void updateFields() {/*
         ElectricFieldLine.setFine_compute_distance((int)resolutionthreshold_slider.getValue());
         ElectricFieldLine.setNum_steps((int)stepcount_slider.getValue());
 
@@ -252,6 +252,6 @@ public class efieldparamController {
 
         ElectricFieldLine.setRough_precision_adaptive(roughstepadaptive_slider.getValue());
         ElectricFieldLine.setRough_step_adaptive(roughstepadaptive_slider.getValue());
-        ElectricFieldLine.setRough_step(roughstep_slider.getValue());
+        ElectricFieldLine.setRough_step(roughstep_slider.getValue());*/
     }
 }

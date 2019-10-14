@@ -9,15 +9,15 @@ import java.util.function.Function;
 public class ElectricFieldLine extends FieldLine implements Runnable {
     private static int fine_compute_distance = 100;
 
-    private static double fine_precision_adaptive = 0.1;
-    private static double fine_step_adaptive = 0.1;
-    private static double rough_step_adaptive = 30;
-    private static double rough_precision_adaptive = 10;
+    private static double fine_precision_adaptive = 0.01;
+    private static double fine_step_adaptive = 0.01;
+    private static double rough_step_adaptive = 1;
+    private static double rough_precision_adaptive = 1;
 
-    private static double fine_step = 0.1;
-    private static double rough_step = 50;
+    private static double fine_step = 0.01;
+    private static double rough_step = 5;
 
-    private static int num_steps = 10000;
+    private static int num_steps = 1000000;
 
     private Function<Vector2D, Boolean> func;
     private int numsteps;

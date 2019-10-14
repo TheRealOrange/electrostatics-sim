@@ -3,17 +3,19 @@ package app;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import canvas.*;
 import electrostatics.ElectricFieldLine;
 import electrostatics.Particle;
-import electrostatics.PotentialFieldLine;
 import electrostatics.SystemModel;
+import elements.Charge;
+import elements.Field;
+import elements.Potential;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -47,7 +49,7 @@ public class uiController {
     private URL location;
 
     @FXML
-    private AnchorPane canvas;
+    private InfiniteCanvas canvas;
 
     @FXML
     private Accordion menu;
@@ -140,14 +142,13 @@ public class uiController {
     void addCharge(MouseEvent event) {
         if (!ismoving && !updating) {
             Particle p = new Particle(chargeval.getValue(), Double.parseDouble(radiusval.getText()), new Vector2D(0, 0));
-            Charge charge = new Charge(p);
             App.model.addCharge(p);
-            App.controller.getScreen("gui").getChildren().add(charge);
+            Charge charge = new Charge(p);
+            canvas.getChildren().add(charge);
 
-            charge.setOnMouseClicked(e -> {
-                if (charge.isMove() && ismoving) {
+            /*charge.setOnMouseClicked(e -> {
+                if (ismoving) {
                     timer.stop();
-                    charge.setMove(false);
                     ismoving = false;
                     App.model.moveParticle(charge.getCharge(), charge.getPos());
                     System.out.printf("x: %f, y: %f\n", charge.getPos().getX(), charge.getPos().getY());
@@ -156,7 +157,6 @@ public class uiController {
                         display();
                     }
                 } else if (!ismoving) {
-                    charge.setMove(true);
                     ismoving = true;
                     timer = new AnimationTimer() {
                         @Override
@@ -169,9 +169,9 @@ public class uiController {
                     };
                     timer.start();
                 }
-            });
+            });*/
 
-            charge.getOnMouseClicked().handle(null);
+            //charge.getOnMouseClicked().handle(null);
         }
     }
 
@@ -182,7 +182,8 @@ public class uiController {
 
     @FXML
     void forceRender(MouseEvent event) {
-
+        compute();
+        display();
     }
 
     @FXML
@@ -298,6 +299,8 @@ public class uiController {
         this.fieldlines = new ArrayList<>();
         this.updating = false;
         this.render = true;
+
+        Movable.init(canvas);
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
@@ -320,7 +323,7 @@ public class uiController {
 
     void updateChargePosition() {
         for (Charge c : charges) {
-            c.setPos(c.getCharge().getPosition().sub(App.model.getOrigin()).mul(scaling));
+            //c.setPos(c.getCharge().getPosition().sub(App.model.getOrigin()).mul(scaling));
         }
     }
 
@@ -358,12 +361,12 @@ public class uiController {
         this.potentiallines = new ArrayList<>();
         this.fieldlines = new ArrayList<>();
 
-        for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
+        /*for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
             Potential p = new Potential(pfl);
             canvas.getChildren().add(p);
             p.draw();
             potentiallines.add(p);
-        }
+        }*/
 
         for (ElectricFieldLine efl : App.model.getFieldLines()) {
             Field f = new Field(efl);

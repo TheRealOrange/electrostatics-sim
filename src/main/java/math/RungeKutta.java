@@ -1,6 +1,5 @@
 package math;
 
-import java.util.ArrayList;
 import java.util.function.BiFunction;
 
 public class RungeKutta {

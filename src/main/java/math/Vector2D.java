@@ -1,6 +1,7 @@
 package math;
 
 import java.awt.*;
+import javafx.geometry.Point2D;
 import java.io.Serializable;
 
 public class Vector2D implements Cloneable, Serializable {
@@ -13,6 +14,11 @@ public class Vector2D implements Cloneable, Serializable {
     }
 
     public Vector2D(Point p) {
+        this.x = p.getX();
+        this.y = p.getY();
+    }
+
+    public Vector2D(Point2D p) {
         this.x = p.getX();
         this.y = p.getY();
     }
@@ -60,6 +66,8 @@ public class Vector2D implements Cloneable, Serializable {
     public Vector2D unit() {
         return this.div(this.magnitude());
     }
+
+    public Point2D toPoint() { return new Point2D(this.x, this.y); }
 
     @Override
     public boolean equals(Object obj) {

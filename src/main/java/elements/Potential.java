@@ -1,10 +1,10 @@
-package app;
+package elements;
 
 import electrostatics.PotentialFieldLine;
 import javafx.scene.shape.Polyline;
 import math.Vector2D;
 
-public class Potential extends Polyline {
+public class Potential extends Polyline{
     private PotentialFieldLine pfl;
     public Potential(PotentialFieldLine pfl) {
         this.pfl = pfl;
