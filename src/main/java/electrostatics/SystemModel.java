@@ -57,7 +57,7 @@ public class SystemModel {
         charge = findID(charge);
         for (Particle p : this.charges) {
             //System.out.printf("x: %f, y: %f\n", p.getPosition().getX(), p.getPosition().getY());
-            if (p == charge) continue;]
+            if (p == charge) continue;
             if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + charge.getRadius())) return true;
         }
         return false;
