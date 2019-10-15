@@ -31,7 +31,7 @@ public class ElectricField extends Field {
                     points[i][0] = (p.getRadius() + 1) * Math.sin((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getX();
                     points[i][1] = (p.getRadius() + 1) * Math.cos((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getY();
                     System.out.printf("circle pts %f %f\n", points[i][0], points[i][1]);
-                    super.lines.add(new ElectricFieldLine(p.clone(), new Vector2D(points[i][0], points[i][1]), super.solver, func, f, i));
+                    super.lines.add(new ElectricFieldLine(p.clone(), new Vector2D(points[i][0], points[i][1]), super.solver.clone(), func, f, i));
                 }
             }
         }

@@ -51,6 +51,10 @@ public class RungeKutta {
         return step(curr, t, h[0]);
     }
 
+    public RungeKutta clone() {
+        return new RungeKutta(func, stages, weights, nodes, coefficients);
+    }
+
     static final double[] eulerWeights = new double[]{1};
     static final double[] eulerNodes = new double[]{0};
 

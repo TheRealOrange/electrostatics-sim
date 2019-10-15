@@ -269,7 +269,7 @@ public class uiController {
 
         ufieldsolver.getSelectionModel().select(5);
 
-        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 1.6, 1.6);
+        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 8, 1.6);
 
         chargeval.setValueFactory(factory);
 

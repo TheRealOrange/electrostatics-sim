@@ -28,7 +28,7 @@ public class App extends Application {
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(800);
 
-        primaryStage.setTitle("ronnisgay");
+        primaryStage.setTitle("nonono");
         primaryStage.setScene(scene);
         //primaryStage.getScene().getStylesheets().add(getClass().getResource("/gui.css").toExternalForm());
 

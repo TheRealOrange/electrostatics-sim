@@ -65,7 +65,7 @@ public class SystemModel {
 
     public boolean checkCollision(Vector2D pos) {
         for (Particle p : this.charges) {
-            if (p.getPosition().sub(pos).magnitude() <= p.getRadius()) return true;
+            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + 2)) return true;
         }
         return false;
     }
