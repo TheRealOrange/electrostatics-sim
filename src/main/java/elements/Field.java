@@ -14,19 +14,20 @@ public class Field extends Polyline implements CanvasNode {
 
     public Field(ElectricFieldLine efl) {
         this.efl = efl;
-        this.newoffset = new Vector2D();
+        this.newoffset = new Vector2D(0, 0);
         this.points = new ArrayList<>();
     }
 
     public void draw() {
         synchronized (super.getPoints()) {
             super.getPoints().removeAll(points);
-            System.out.println("drawing");
+            System.out.println("drawing LINE");
             points = new ArrayList<>();
             for (Vector2D pt : efl.getPoints()) {
                 Vector2D pos = pt.sub(newoffset);
-                points.add(pos.getX().doubleValue());
-                points.add(pos.getY().doubleValue());
+                points.add(pos.getX());
+                points.add(pos.getY());
+                System.out.println(pt.getX() + '|' + pt.getY());
                 //System.out.printf("%f, y: %f\n", pt.getX(), pt.getY());
             }
             super.getPoints().addAll(points);

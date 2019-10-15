@@ -1,9 +1,7 @@
 package electrostatics;
 
-import math.Constants;
 import math.RungeKutta;
 import math.Vector2D;
-import org.apfloat.Apfloat;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -23,19 +21,17 @@ public class ElectricField extends Field {
     public CompletableFuture<Void> compute() {
         ArrayList<CompletableFuture<Void>> futures = new ArrayList<>();
         for (Particle p : super.charges) {
-            //System.out.printf("particle x: %f y: %f\n", p.getPosition().getX(), p.getPosition().getY());
-            System.out.println(p);
-            if (p.getCharge().compareTo(new Apfloat(0, Constants.getPrecision())) > 0) {
-                System.out.println("jro");
-                int lines = (p.getCharge().multiply(new Apfloat(linedensity, Constants.getPrecision()))).intValue();
+            System.out.printf("particle x: %f y: %f\n", p.getPosition().getX(), p.getPosition().getY());
+            if (p.getCharge() > 0) {
+                int lines = (int) (linedensity * p.getCharge());
                 double[][] points = new double[lines][2];
                 for (int i = 0; i < lines; ++i) {
                     CompletableFuture<Void> f = new CompletableFuture<>();
                     futures.add(f);
-                    points[i][0] = (p.getRadius() + 1) * Math.sin((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getX().doubleValue();
-                    points[i][1] = (p.getRadius() + 1) * Math.cos((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getY().doubleValue();
+                    points[i][0] = (p.getRadius() + 1) * Math.sin((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getX();
+                    points[i][1] = (p.getRadius() + 1) * Math.cos((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getY();
                     System.out.printf("circle pts %f %f\n", points[i][0], points[i][1]);
-                    super.lines.add(new ElectricFieldLine(p.clone(), new Vector2D(points[i][0], points[i][1]), super.solver, func, f, i));
+                    super.lines.add(new ElectricFieldLine(p.clone(), new Vector2D(points[i][0], points[i][1]), super.solver.clone(), func, f, i));
                 }
             }
         }

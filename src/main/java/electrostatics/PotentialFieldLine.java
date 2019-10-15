@@ -1,43 +1,41 @@
 package electrostatics;
 
 import math.AdaptiveRungeKutta;
-import math.Constants;
 import math.RungeKutta;
 import math.Vector2D;
-import org.apfloat.Apfloat;
 
 import java.util.concurrent.CompletableFuture;
 
 public class PotentialFieldLine extends FieldLine {
     private static int num_steps_adaptive = 8000;
-    private static Apfloat step_amt_adaptive = new Apfloat(0.001);
+    private static double step_amt_adaptive = 0.001;
 
     private static int num_steps = 15000;
-    private static Apfloat step_amt = new Apfloat(0.0001);
+    private static double step_amt = 0.0001;
 
-    private static Apfloat tolerance = new Apfloat(1e-3);
+    private static double tolerance = 1e-3;
 
-    private Apfloat potential;
+    private double potential;
     private Vector2D wcenter;
 
     private int numsteps;
-    private Apfloat[] step;
+    private double[] step;
 
-    public PotentialFieldLine(Vector2D start, RungeKutta solver, CompletableFuture<Void> future, Apfloat potential, Vector2D wcenter) {
+    public PotentialFieldLine(Vector2D start, RungeKutta solver, CompletableFuture<Void> future, double potential, Vector2D wcenter) {
         super(start, solver, future);
-        this.potential = potential.add(new Apfloat(0, Constants.getPrecision()));
+        this.potential = potential;
         this.wcenter = wcenter;
         this.numsteps = (solver instanceof AdaptiveRungeKutta)?num_steps_adaptive:num_steps;
-        this.step = new Apfloat[]{(solver instanceof AdaptiveRungeKutta)?step_amt_adaptive:step_amt};
+        this.step = new double[]{(solver instanceof AdaptiveRungeKutta)?step_amt_adaptive:step_amt};
     }
 
     @Override
     public void run() {
         Vector2D point = this.start;
-        Apfloat dist;
-        Apfloat t = new Apfloat(0, Constants.getPrecision());
+        double dist = 0;
+        double t = 0;
 
-        Apfloat[] nextstep = new Apfloat[]{this.step[0]};
+        double[] nextstep = new double[]{this.step[0]};
 
         for (int i = 0;i < this.numsteps;++i) {
             point = solver.step(point, t, step, nextstep, tolerance);
@@ -46,11 +44,11 @@ public class PotentialFieldLine extends FieldLine {
 
             wcenter = wcenter.add(point.mul(step[0]));
 
-            t = t.add(step[0]);
+            t += step[0];
             if (solver instanceof AdaptiveRungeKutta) step[0] = nextstep[0];
 
-            dist = start.sub(point).fast_magnitude();
-            if (dist.multiply(new Apfloat(unit)).doubleValue() < 6. && t.doubleValue() > 2.*dist.doubleValue()) { add(start); wcenter = wcenter.div(t); break; }
+            dist = start.sub(point).magnitude();
+            if (dist * unit < 6. && t > 2.*dist) { add(start); wcenter = wcenter.div(t); break; }
         }
 
         super.future.complete(null);
@@ -64,12 +62,12 @@ public class PotentialFieldLine extends FieldLine {
         PotentialFieldLine.num_steps_adaptive = num_steps_adaptive;
     }
 
-    public static Apfloat getStep_amt_adaptive() {
-        return step_amt_adaptive.add(new Apfloat(0, Constants.getPrecision()));
+    public static double getStep_amt_adaptive() {
+        return step_amt_adaptive;
     }
 
-    public static void setStep_amt_adaptive(Apfloat step_amt_adaptive) {
-        PotentialFieldLine.step_amt_adaptive = step_amt_adaptive.add(new Apfloat(0, Constants.getPrecision()));
+    public static void setStep_amt_adaptive(double step_amt_adaptive) {
+        PotentialFieldLine.step_amt_adaptive = step_amt_adaptive;
     }
 
     public static int getNum_steps() {
@@ -80,19 +78,19 @@ public class PotentialFieldLine extends FieldLine {
         PotentialFieldLine.num_steps = num_steps;
     }
 
-    public static Apfloat getStep_amt() {
-        return step_amt.add(new Apfloat(0, Constants.getPrecision()));
+    public static double getStep_amt() {
+        return step_amt;
     }
 
-    public static void setStep_amt(Apfloat step_amt) {
-        PotentialFieldLine.step_amt = step_amt.add(new Apfloat(0, Constants.getPrecision()));
+    public static void setStep_amt(double step_amt) {
+        PotentialFieldLine.step_amt = step_amt;
     }
 
-    public static Apfloat getTolerance() {
-        return tolerance.add(new Apfloat(0, Constants.getPrecision()));
+    public static double getTolerance() {
+        return tolerance;
     }
 
-    public static void setTolerance(Apfloat tolerance) {
-        PotentialFieldLine.tolerance = tolerance.add(new Apfloat(0, Constants.getPrecision()));
+    public static void setTolerance(double tolerance) {
+        PotentialFieldLine.tolerance = tolerance;
     }
 }

@@ -36,8 +36,8 @@ public class Charge extends Circle implements CanvasNode {
     }
 
     public void setCoords(Vector2D pos) {
-        super.setCenterX(pos.getX().doubleValue());
-        super.setCenterY(pos.getY().doubleValue());
+        super.setCenterX(pos.getX());
+        super.setCenterY(pos.getY());
         App.model.moveParticle(charge, pos);
         this.charge.setPosition(pos);
     }

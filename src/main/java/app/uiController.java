@@ -30,7 +30,6 @@ import javafx.util.StringConverter;
 import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
-import org.apfloat.Apfloat;
 
 public class uiController {
     private ArrayList<Charge> charges;
@@ -143,7 +142,7 @@ public class uiController {
     @FXML
     void addCharge(MouseEvent event) {
         if (!ismoving && !updating) {
-            Particle p = new Particle(new Apfloat(chargeval.getValue()), Double.parseDouble(radiusval.getText()), new Vector2D(0, 0));
+            Particle p = new Particle(chargeval.getValue(), Double.parseDouble(radiusval.getText()), new Vector2D(0, 0));
             App.model.addCharge(p);
             Charge charge = new Charge(p);
             canvas.getChildren().add(charge);
@@ -248,7 +247,7 @@ public class uiController {
         App.model = new SystemModel();
 
 
-        String[] methods = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
+        String methods[] = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
 
         efieldsolver.setItems(FXCollections.observableArrayList(methods));
         efieldsolver.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
@@ -270,7 +269,7 @@ public class uiController {
 
         ufieldsolver.getSelectionModel().select(5);
 
-        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 1.6, 1.6);
+        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 8, 1.6);
 
         chargeval.setValueFactory(factory);
 
@@ -305,7 +304,7 @@ public class uiController {
         Movable.init(canvas);
     }
 
-    RungeKutta selectSolver(BiFunction<Apfloat, Vector2D, Vector2D> func, int solver) {
+    RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
         switch (solver) {
             case 0: return new RungeKutta.Euler(func);
             case 1: return new RungeKutta.Midpoint(func);
