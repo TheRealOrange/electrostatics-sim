@@ -1,6 +1,5 @@
 package electrostatics;
 
-import math.Constants;
 import math.RungeKutta;
 import math.Vector2D;
 
@@ -35,7 +34,7 @@ public class SystemModel {
     }
 
     public SystemModel() {
-        this(new ArrayList<Particle>(), new Vector2D(), null, null);
+        this(new ArrayList<Particle>(), new Vector2D(0, 0), null, null);
     }
 
     public void compute() throws InterruptedException, ExecutionException {
@@ -49,7 +48,6 @@ public class SystemModel {
 
     public Particle getParticleAt(Vector2D pos) {
         for (Particle p : this.charges) {
-            Vector2D dist = p.getPosition().sub(pos);
             if (p.getPosition().sub(pos).magnitude() < p.getRadius()) return p;
         }
         return null;
@@ -59,8 +57,8 @@ public class SystemModel {
         charge = findID(charge);
         for (Particle p : this.charges) {
             //System.out.printf("x: %f, y: %f\n", p.getPosition().getX(), p.getPosition().getY());
-            if (p == charge) continue;
-            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + charge.getRadius() + 2) <= 0) return true;
+            if (p == charge) continue;]
+            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + charge.getRadius())) return true;
         }
         return false;
     }
@@ -80,15 +78,15 @@ public class SystemModel {
     }
 
     public Vector2D field(Vector2D position) {
-        Vector2D e = new Vector2D();
+        Vector2D e = new Vector2D(0, 0);
         for (Particle p : this.charges) e = e.add(p.field(position));
         //System.out.println(e);
         return e;
     }
 
-    public Apfloat potential(Vector2D position) {
-        Apfloat u = new Apfloat(0, Constants.getPrecision());
-        for (Particle p : this.charges) u = u.add(p.potential(position));
+    public double potential(Vector2D position) {
+        double u = 0;
+        for (Particle p : this.charges) u += p.potential(position);
         return u;
     }
 
@@ -99,7 +97,7 @@ public class SystemModel {
     public Vector2D solvePotential(double t, Vector2D position) {
         Vector2D field = field(position);
         double x = field.getX();
-        field.setX(field.getY().negate());
+        field.setX(-field.getY());
         field.setY(x);
         return field.unit();
     }
@@ -145,7 +143,7 @@ public class SystemModel {
     }
 
     public void addCharge(Vector2D pos, double radius, double charge) {
-        this.charges.add(new Particle(new Apfloat(charge), radius, pos.clone()));
+        this.charges.add(new Particle(charge, radius, pos.clone()));
     }
 
     public void addCharge(Particle p) {
