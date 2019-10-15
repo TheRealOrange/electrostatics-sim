@@ -77,3 +77,4 @@ fabric.properties
 .idea/httpRequests
 
 *.hprof
+*.log
