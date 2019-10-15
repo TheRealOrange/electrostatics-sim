@@ -37,6 +37,6 @@ public class Field extends Polyline implements CanvasNode {
     @Override
     public void reposition(Vector2D prevOffset, Vector2D offset) {
         newoffset = prevOffset.sub(offset);
-        draw();
+        super.relocate(offset.getX(), offset.getY());
     }
 }

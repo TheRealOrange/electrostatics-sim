@@ -2,6 +2,6 @@ package canvas;
 
 import math.Vector2D;
 
-public interface git cCanvasNode {
+public interface CanvasNode {
   void reposition(Vector2D prevOffset, Vector2D offset);
 }
