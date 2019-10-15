@@ -52,5 +52,5 @@ dependencies {
 }
 
 shadowJar {
-    baseName = 'electrostatics-sim-fast'
+    baseName = 'electrostatics-sim'
 }
