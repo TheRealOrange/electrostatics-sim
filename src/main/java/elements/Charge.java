@@ -7,16 +7,28 @@ import electrostatics.Particle;
 import javafx.scene.shape.Circle;
 import math.Vector2D;
 
+import java.util.function.Function;
+
 public class Charge extends Circle implements CanvasNode {
     private Particle charge;
     private final Movable movable;
 
-    public Charge(Particle charge) {
+    private Runnable compute;
+    private Runnable display;
+
+    public Charge(Particle charge, Runnable compute, Runnable display) {
         super();
         this.charge = charge;
         super.setRadius(charge.getRadius());
         movable = new Movable(this, this::getCoords, this::setCoords);
         movable.setCoords(this.charge.getPosition());
+
+        this.compute = compute;
+        this.display = display;
+    }
+
+    public Charge(Particle charge) {
+        this(charge, null, null);
     }
 
     public Particle getCharge() {
@@ -40,6 +52,11 @@ public class Charge extends Circle implements CanvasNode {
         super.setCenterY(pos.getY());
         App.model.moveParticle(charge, pos);
         this.charge.setPosition(pos);
+
+        if (compute != null && display != null) {
+            this.compute.run();
+            this.display.run();
+        }
     }
 
     @Override

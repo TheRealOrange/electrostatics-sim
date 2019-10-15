@@ -144,35 +144,8 @@ public class uiController {
         if (!ismoving && !updating) {
             Particle p = new Particle(chargeval.getValue(), Double.parseDouble(radiusval.getText()), new Vector2D(0, 0));
             App.model.addCharge(p);
-            Charge charge = new Charge(p);
+            Charge charge = new Charge(p, this::compute, this::display);
             canvas.getChildren().add(charge);
-
-            /*charge.setOnMouseClicked(e -> {
-                if (ismoving) {
-                    timer.stop();
-                    ismoving = false;
-                    App.model.moveParticle(charge.getCharge(), charge.getPos());
-                    System.out.printf("x: %f, y: %f\n", charge.getPos().getX(), charge.getPos().getY());
-                    if (render) {
-                        compute();
-                        display();
-                    }
-                } else if (!ismoving) {
-                    ismoving = true;
-                    timer = new AnimationTimer() {
-                        @Override
-                        public void handle(long now) {
-                            Point mouse = normalizedMousePos();
-                            if (!App.model.checkMoveCollision(charge.getCharge(), new Vector2D(mouse))) {
-                                charge.setPos(new Vector2D(mouse));
-                            }
-                        }
-                    };
-                    timer.start();
-                }
-            });*/
-
-            //charge.getOnMouseClicked().handle(null);
         }
     }
 
@@ -322,7 +295,7 @@ public class uiController {
         return null;
     }
 
-    void compute() {
+    public void compute() {
         this.updating = true;
         try {
             App.model.compute();
@@ -332,7 +305,7 @@ public class uiController {
         this.updating = false;
     }
 
-    void display() {
+    public void display() {
         this.updating = true;
         for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
         for (Field p : this.fieldlines) canvas.getChildren().remove(p);

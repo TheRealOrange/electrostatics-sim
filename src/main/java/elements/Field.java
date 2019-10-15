@@ -14,29 +14,30 @@ public class Field extends Polyline implements CanvasNode {
 
     public Field(ElectricFieldLine efl) {
         this.efl = efl;
-        this.newoffset = new Vector2D(0, 0);
-        this.points = new ArrayList<>();
     }
 
     public void draw() {
         synchronized (super.getPoints()) {
-            super.getPoints().removeAll(points);
-            System.out.println("drawing LINE");
+            super.getPoints().clear();
+            System.out.println("drawing");
             points = new ArrayList<>();
+            double x = efl.getPoints().get(0).getX()-10; double y = efl.getPoints().get(0).getY()-10;
             for (Vector2D pt : efl.getPoints()) {
-                Vector2D pos = pt.sub(newoffset);
-                points.add(pos.getX());
-                points.add(pos.getY());
-                System.out.println(pt.getX() + '|' + pt.getY());
                 //System.out.printf("%f, y: %f\n", pt.getX(), pt.getY());
+                if (Math.abs(pt.getX() - x) > 0.5 || Math.abs(pt.getY() - y) > 0.5) {
+                    x = pt.getX(); y = pt.getY();
+                    points.add(x); points.add(y);
+                }
             }
             super.getPoints().addAll(points);
+            super.toBack();
         }
     }
 
     @Override
     public void reposition(Vector2D prevOffset, Vector2D offset) {
-        newoffset = prevOffset.sub(offset);
-        super.relocate(offset.getX(), offset.getY());
+        Vector2D newoffset = prevOffset.sub(offset);
+        super.setLayoutX(super.getLayoutX()-newoffset.getX());
+        super.setLayoutY(super.getLayoutY()-newoffset.getY());
     }
 }

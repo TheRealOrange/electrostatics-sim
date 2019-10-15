@@ -16,7 +16,7 @@ public class InfiniteCanvas extends AnchorPane {
       offset = offset.add(new Vector2D(event.getSceneX(), event.getSceneY()).sub(startPoint));
       startPoint = new Vector2D(event.getSceneX(), event.getSceneY());
       if (System.currentTimeMillis() - previousChange < delay) return;
-      for (Node child : this.getChildren()) {
+        for (Node child : this.getChildren()) {
         if (child instanceof CanvasNode) {
           ((CanvasNode) child).reposition(oldOffset, offset);
         }
