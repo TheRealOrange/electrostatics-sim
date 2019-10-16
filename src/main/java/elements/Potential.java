@@ -7,23 +7,28 @@ import javafx.scene.paint.Paint;
 import java.util.ArrayList;
 
 public class Potential extends DrawLine {
-    private static ArrayList<Field> objs = new ArrayList<>();
+    private static ArrayList<Potential> objs = new ArrayList<>();
     private static int weight = 1;
     private static double[] style ={1, 0};
     private static int style_num = 0;
     private static Paint color = Color.BLACK;
     public Potential(PotentialFieldLine pfl) {
         super(pfl);
+        super.setStrokeWidth(weight);
+        super.getStrokeDashArray().clear();
+        super.getStrokeDashArray().addAll(style[0], style[1]);
+        super.setStroke(color);
+        objs.add(this);
     }
 
     public static void setLineWeight(int weight) {
         Potential.weight = weight;
-        for (Field f : objs) f.setStrokeWidth(Potential.weight);
+        for (Potential f : objs) f.setStrokeWidth(Potential.weight);
     }
 
     public static void setLineStyle(double[] style) {
         Potential.style = style;
-        for (Field f : objs) {
+        for (Potential f : objs) {
             f.getStrokeDashArray().clear();
             f.getStrokeDashArray().addAll(Potential.style[0], Potential.style[1]);
         }
@@ -31,7 +36,7 @@ public class Potential extends DrawLine {
 
     public static void setLineColor(Paint p) {
         Potential.color = p;
-        for (Field f : objs) {
+        for (Potential f : objs) {
             f.setFill(p);
         }
     }

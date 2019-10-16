@@ -17,7 +17,7 @@ public class Field extends DrawLine {
         super.setStrokeWidth(weight);
         super.getStrokeDashArray().clear();
         super.getStrokeDashArray().addAll(style[0], style[1]);
-        super.setFill(color);
+        super.setStroke(color);
         objs.add(this);
     }
 
