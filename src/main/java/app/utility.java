@@ -1,14 +1,42 @@
 package app;
 
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.Group;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public abstract class utility {
+    static Callback<ListView<String>, ListCell<String>> newLineCellFactory() {
+        return new Callback<>() {
+            @Override public ListCell<String> call(ListView<String> p) {
+                return new ListCell<>() {
+                    private final Group group;
+                    private final Line line;{
+                        setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                        group = new Group();
+                        group.getChildren().add(new Rectangle(80, 15, Color.TRANSPARENT));
+                        line = new Line(0, 7.5, 100, 7.5);
+                        group.getChildren().add(line);
+                    }
+
+                    @Override protected void updateItem(String style, boolean empty) {
+                        super.updateItem(style, empty);
+                        if(style != null && !empty) {
+                            line.setStyle(style);
+                            setGraphic(group);
+                        }
+                    }
+                };
+            }
+        };
+    }
+
     static void initSlider(Slider slider, double min, double max, double step) {
         slider.setMin(min);
         slider.setMax(max);

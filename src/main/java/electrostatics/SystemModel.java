@@ -50,6 +50,7 @@ public class SystemModel {
         for (FieldLine fl : this.ufield.getLines()) plines.add((PotentialFieldLine) fl);
         Collections.sort(plines);
 
+        if (plines.size() <= 0) return;
         double pt = plines.get(0).getPotential();
 
         ArrayList< ArrayList<PotentialFieldLine> > equipotentials = new ArrayList<>(); equipotentials.add(new ArrayList<>());

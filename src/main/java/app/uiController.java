@@ -14,6 +14,7 @@ import electrostatics.Particle;
 import electrostatics.PotentialFieldLine;
 import electrostatics.SystemModel;
 import elements.Charge;
+import elements.DrawLine;
 import elements.Field;
 import elements.Potential;
 import javafx.animation.AnimationTimer;
@@ -100,22 +101,22 @@ public class uiController {
     private AnchorPane viewpane;
 
     @FXML
-    private ComboBox<?> efieldlinestyle;
+    private ComboBox<String> efieldlinestyle;
 
     @FXML
-    private Spinner<?> efieldlineweight;
+    private Spinner<Integer> efieldlineweight;
 
     @FXML
-    private ComboBox<?> ufieldlinestyle;
+    private ComboBox<String> ufieldlinestyle;
 
     @FXML
-    private Spinner<?> ufieldlineweight;
+    private Spinner<Integer> ufieldlineweight;
 
     @FXML
-    private Spinner<?> dispscale;
+    private Spinner<Integer> dispscale;
 
     @FXML
-    private ComboBox<?> disptheme;
+    private ComboBox<String> disptheme;
 
     @FXML
     private TitledPane settingsmenu;
@@ -124,7 +125,7 @@ public class uiController {
     private AnchorPane settingspane;
 
     @FXML
-    private Spinner<?> efieldlinedensity;
+    private Spinner<Integer> efieldlinedensity;
 
     @FXML
     private ComboBox<String> efieldsolver;
@@ -133,7 +134,7 @@ public class uiController {
     private Button efieldparams;
 
     @FXML
-    private Spinner<?> uinterval;
+    private Spinner<Double> uinterval;
 
     @FXML
     private ComboBox<String> ufieldsolver;
@@ -142,7 +143,7 @@ public class uiController {
     private Button ufieldparams;
 
     @FXML
-    private ComboBox<?> language;
+    private ComboBox<String> language;
 
     @FXML
     void addCharge(MouseEvent event) {
@@ -258,7 +259,6 @@ public class uiController {
         assert language != null : "fx:id=\"language\" was not injected: check your FXML file 'gui.fxml'.";
         App.model = new SystemModel();
 
-
         String methods[] = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
 
         efieldsolver.setItems(FXCollections.observableArrayList(methods));
@@ -286,9 +286,36 @@ public class uiController {
 
         SpinnerValueFactory factory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1, 1);
         efieldlineweight.setValueFactory(factory2);
+        efieldlineweight.getValueFactory().valueProperty().addListener(e->{
+            Field.setLineWeight(efieldlineweight.getValue());
+        });
 
         SpinnerValueFactory factory3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1, 1);
         ufieldlineweight.setValueFactory(factory3);
+        ufieldlineweight.getValueFactory().valueProperty().addListener(e->{
+            Potential.setLineWeight(ufieldlineweight.getValue());
+        });
+
+        String[] style = { "-fx-stroke-dash-array: 1 0;", "-fx-stroke-dash-array: 12 10;", "-fx-stroke-dash-array: 2 4;" };
+        double[][] stroke = {{1.0, 0.0}, {12.0, 10.0}, {2.0, 4.0}};
+
+        efieldlinestyle.setItems(FXCollections.observableArrayList(style));
+        efieldlinestyle.setCellFactory(utility.newLineCellFactory());
+        efieldlinestyle.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
+            if (new_value.intValue() >= 0 && new_value.intValue() <= 2) {
+                System.out.println(style[new_value.intValue()] + " selected");
+                Field.setLineStyle(stroke[new_value.intValue()]);
+            }
+        }); efieldlinestyle.setButtonCell(efieldlinestyle.getCellFactory().call(null));
+
+        ufieldlinestyle.setItems(FXCollections.observableArrayList(style));
+        ufieldlinestyle.setCellFactory(utility.newLineCellFactory());
+        ufieldlinestyle.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
+            if (new_value.intValue() >= 0 && new_value.intValue() <= 2) {
+                System.out.println(style[new_value.intValue()] + " selected");
+                Potential.setLineStyle(stroke[new_value.intValue()]);
+            }
+        }); ufieldlinestyle.setButtonCell(ufieldlinestyle.getCellFactory().call(null));
 
         TextFormatter<Double> textFormatter = utility.doubleFormatter(1, 100, 10);
         radiusval.setTextFormatter(textFormatter);
@@ -321,7 +348,8 @@ public class uiController {
             }
         });
 
-
+        ufieldlinestyle.getSelectionModel().select(0);
+        efieldlinestyle.getSelectionModel().select(0);
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
