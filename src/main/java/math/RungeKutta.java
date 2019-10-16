@@ -2,7 +2,7 @@ package math;
 
 import java.util.function.BiFunction;
 
-public class RungeKutta {
+public class RungeKutta implements Cloneable {
     BiFunction<Double, Vector2D, Vector2D> func;
     int stages;
     double[] weights;

@@ -4,6 +4,7 @@ import math.RungeKutta;
 import math.Vector2D;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -44,6 +45,49 @@ public class SystemModel {
         for (FieldLine fl : this.efield.getLines()) lines.add((ElectricFieldLine) fl);
         this.ufield = new PotentialField(this.threadpool, charges, this.ufieldsolver, this::potential, lines, this.potentialint);
         this.ufield.compute().get();
+
+        ArrayList<PotentialFieldLine> plines = new ArrayList<>();
+        for (FieldLine fl : this.ufield.getLines()) plines.add((PotentialFieldLine) fl);
+        Collections.sort(plines);
+
+        double pt = plines.get(0).getPotential();
+
+        ArrayList< ArrayList<PotentialFieldLine> > equipotentials = new ArrayList<>(); equipotentials.add(new ArrayList<>());
+        ArrayList< ArrayList<Boolean> > duplicate = new ArrayList<>(); duplicate.add(new ArrayList<>());
+        int i = 0;
+
+        for (PotentialFieldLine pfl : plines) {
+            if (Math.abs(pfl.getPotential()-pt) >= potentialint) {
+                equipotentials.add(new ArrayList<>()); duplicate.add(new ArrayList<>()); ++i;
+                pt = pfl.getPotential();
+            }
+            equipotentials.get(i).add(pfl);
+            duplicate.get(i).add(true);
+        }
+
+        ArrayList<PotentialFieldLine> apl;
+        for (int n = 0;n < equipotentials.size();++n) {
+            apl = equipotentials.get(n);
+            for (int j = 0;j < apl.size();++j) {
+                for (int k = j+1;k < apl.size() && duplicate.get(n).get(j);++k) {
+                    System.out.println(apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() + ", " + apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude());
+                    if (apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() < 35 && apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude() < 5) {
+                        duplicate.get(n).set(k, false);
+                    }
+                }
+            }
+        }
+
+        ArrayList<FieldLine> newlines = new ArrayList<>();
+
+        for (int n = 0;n < equipotentials.size();++n) {
+            apl = equipotentials.get(n);
+            for (int j = 0;j < apl.size();++j) {
+                if (duplicate.get(n).get(j)) newlines.add(apl.get(j));
+            }
+        }
+
+        this.ufield.setLines(newlines);
     }
 
     public Particle getParticleAt(Vector2D pos) {

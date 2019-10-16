@@ -30,7 +30,14 @@ public abstract class FieldLine implements Runnable {
         return points;
     }
 
+    public void setPoints(ArrayList<Vector2D> points) {
+        this.points = new ArrayList<>();
+        for (Vector2D pt : points) this.points.add(pt.clone());
+    }
+
     public double getUnit() {
         return unit;
     }
+
+    public abstract FieldLine clone();
 }

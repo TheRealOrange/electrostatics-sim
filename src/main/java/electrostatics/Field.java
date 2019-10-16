@@ -40,6 +40,11 @@ public abstract class Field {
         return lines;
     }
 
+    public void setLines(ArrayList<FieldLine> lines) {
+        this.lines = new ArrayList<>();
+        for (FieldLine fl : lines) this.lines.add(fl.clone());
+    }
+
     public RungeKutta getSolver() {
         return solver;
     }

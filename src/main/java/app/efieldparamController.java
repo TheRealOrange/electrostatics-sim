@@ -112,134 +112,64 @@ public class efieldparamController {
         assert stepcount != null : "fx:id=\"stepcount\" was not injected: check your FXML file 'fieldparams.fxml'.";
         assert stepcount_slider != null : "fx:id=\"stepcount_slider\" was not injected: check your FXML file 'fieldparams.fxml'.";
 
-        Pattern validEditingState = Pattern.compile("(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
-        Pattern validEditingStateInt = Pattern.compile("[\\d]*");
+        int[] resolutionthreshold_val = new int[]{1, 10000, 1000};
+        int[] stepcount_val = new int[]{1, 100000, 10000};
 
-        UnaryOperator<TextFormatter.Change> filter = c -> {
-            String text = c.getControlNewText();
-            if (validEditingState.matcher(text).matches()) return c;
-            else return null;
-        };
+        double[] fineprecisionadaptive_val = new double[]{0.1, 100, 1};
+        double[] finestepadaptive_val = new double[]{0.1, 100, 1};
+        double[] finestep_val = new double[]{0.1, 100, 15};
 
-        UnaryOperator<TextFormatter.Change> filterInt = c -> {
-            String text = c.getControlNewText();
-            if (validEditingStateInt.matcher(text).matches()) return c;
-            else return null;
-        };
+        double[] roughprecisionadaptive_val = new double[]{0.1, 1000, 50};
+        double[] roughstepadaptive_val = new double[]{0.1, 1000, 50};
+        double[] roughstep_val = new double[]{0.1, 1000, 50};
 
-        StringConverter<Double> fine = new StringConverter<>() {
-            @Override
-            public Double fromString(String s) {
-                if (s.isEmpty() || ".".equals(s) || Double.parseDouble(s) < 0.1 || Double.parseDouble(s) > 100) return 1.0;
-                else return Double.valueOf(s);
-            }
-            @Override
-            public String toString(Double d) { return d.toString(); }
-        };
+        resolutionthreshold.setTextFormatter(utility.intFormatter(resolutionthreshold_val[0], resolutionthreshold_val[1], resolutionthreshold_val[2]));
+        stepcount.setTextFormatter(utility.intFormatter(stepcount_val[0], stepcount_val[1], stepcount_val[2]));
 
-        StringConverter<Double> rough = new StringConverter<>() {
-            @Override
-            public Double fromString(String s) {
-                if (s.isEmpty() || ".".equals(s) || Double.parseDouble(s) < 0.1 || Double.parseDouble(s) > 1000) return 50.0;
-                else return Double.valueOf(s);
-            }
-            @Override
-            public String toString(Double d) { return d.toString(); }
-        };
+        fineprecisionadaptive.setTextFormatter(utility.doubleFormatter(fineprecisionadaptive_val[0], fineprecisionadaptive_val[1], fineprecisionadaptive_val[2]));
+        finestepadaptive.setTextFormatter(utility.doubleFormatter(finestepadaptive_val[0], finestepadaptive_val[1], finestepadaptive_val[2]));
 
-        StringConverter<Integer> integer1 = new StringConverter<>() {
-            @Override
-            public Integer fromString(String s) {
-                if (s.isEmpty() || Integer.parseInt(s) < 1 || Integer.parseInt(s) > 100000) return 1000;
-                else return Integer.valueOf(s);
-            }
-            @Override
-            public String toString(Integer d) { return d.toString(); }
-        };
+        finestep.setTextFormatter(utility.doubleFormatter(finestep_val[0], finestep_val[1], finestep_val[2]));
 
-        StringConverter<Integer> integer2 = new StringConverter<>() {
-            @Override
-            public Integer fromString(String s) {
-                if (s.isEmpty() || Integer.parseInt(s) < 1 || Integer.parseInt(s) > 10000) return 1000;
-                else return Integer.valueOf(s);
-            }
-            @Override
-            public String toString(Integer d) { return d.toString(); }
-        };
+        roughprecisionadaptive.setTextFormatter(utility.doubleFormatter(roughprecisionadaptive_val[0], roughprecisionadaptive_val[1], roughprecisionadaptive_val[2]));
+        roughstepadaptive.setTextFormatter(utility.doubleFormatter(roughstepadaptive_val[0], roughstepadaptive_val[1], roughstepadaptive_val[2]));
 
-        resolutionthreshold.setTextFormatter(new TextFormatter<Integer>(integer2, 100, filterInt));
-        stepcount.setTextFormatter(new TextFormatter<Integer>(integer1, 10000, filterInt));
+        roughstep.setTextFormatter(utility.doubleFormatter(roughstep_val[0], roughstep_val[1], roughstep_val[2]));
 
-        fineprecisionadaptive.setTextFormatter(new TextFormatter<Double>(fine, 1.0, filter));
-        finestepadaptive.setTextFormatter(new TextFormatter<Double>(fine, 1.0, filter));
+        utility.initSliderInt(resolutionthreshold_slider, resolutionthreshold_val[0], resolutionthreshold_val[1], 1);
+        utility.initSliderInt(stepcount_slider, stepcount_val[0], stepcount_val[1], 1);
 
-        finestep.setTextFormatter(new TextFormatter<Double>(fine, 15.0, filter));
+        utility.initSlider(fineprecisionadaptive_slider, fineprecisionadaptive_val[0], fineprecisionadaptive_val[1], 0.1);
+        utility.initSlider(finestepadaptive_slider, finestepadaptive_val[0], finestepadaptive_val[1], 0.1);
+        utility.initSlider(finestep_slider, finestep_val[0], finestep_val[1], 0.1);
 
-        roughprecisionadaptive.setTextFormatter(new TextFormatter<Double>(rough, 10.0, filter));
-        roughstepadaptive.setTextFormatter(new TextFormatter<Double>(rough, 10.0, filter));
+        utility.initSlider(roughprecisionadaptive_slider, roughprecisionadaptive_val[0], roughprecisionadaptive_val[1], 0.1);
+        utility.initSlider(roughstepadaptive_slider, roughstepadaptive_val[0], roughstepadaptive_val[1], 0.1);
+        utility.initSlider(roughstep_slider, roughstep_val[0], roughstep_val[1], 0.1);
 
-        roughstep.setTextFormatter(new TextFormatter<Double>(rough, 50.0, filter));
+        utility.bindInt(resolutionthreshold, resolutionthreshold_slider);
+        utility.bindInt(stepcount, stepcount_slider);
 
-        initSliderInt(resolutionthreshold_slider, 1, 10000, 1);
-        initSliderInt(stepcount_slider, 1, 100000, 1);
+        utility.bind(fineprecisionadaptive, fineprecisionadaptive_slider, 1);
+        utility.bind(finestepadaptive, finestepadaptive_slider, 1);
+        utility.bind(finestep, finestep_slider, 1);
 
-        initSlider(fineprecisionadaptive_slider, 0.1, 100, 0.1);
-        initSlider(finestepadaptive_slider, 0.1, 100, 0.1);
-        initSlider(finestep_slider, 0.1, 100, 0.1);
+        utility.bind(roughprecisionadaptive, roughprecisionadaptive_slider, 1);
+        utility.bind(roughstepadaptive, roughstepadaptive_slider, 1);
+        utility.bind(roughstep, roughstep_slider, 1);
 
-        initSlider(roughprecisionadaptive_slider, 0.1, 1000, 0.1);
-        initSlider(roughstepadaptive_slider, 0.1, 1000, 0.1);
-        initSlider(roughstep_slider, 0.1, 1000, 0.1);
+        resolutionthreshold_slider.setValue(resolutionthreshold_val[2]);
+        stepcount_slider.setValue(stepcount_val[2]);
 
-        bindInt(resolutionthreshold, resolutionthreshold_slider);
-        bindInt(stepcount, stepcount_slider);
+        fineprecisionadaptive_slider.setValue(fineprecisionadaptive_val[2]);
+        finestepadaptive_slider.setValue(finestepadaptive_val[2]);
+        finestep_slider.setValue(finestep_val[2]);
 
-        bind(fineprecisionadaptive, fineprecisionadaptive_slider);
-        bind(finestepadaptive, finestepadaptive_slider);
-        bind(finestep, finestep_slider);
-
-        bind(roughprecisionadaptive, roughprecisionadaptive_slider);
-        bind(roughstepadaptive, roughstepadaptive_slider);
-        bind(roughstep, roughstep_slider);
-
-        resolutionthreshold_slider.setValue(100);
-        stepcount_slider.setValue(10000);
-
-        fineprecisionadaptive_slider.setValue(1);
-        finestepadaptive_slider.setValue(1);
-        finestep_slider.setValue(15);
-
-        roughprecisionadaptive_slider.setValue(10);
-        roughstepadaptive_slider.setValue(10);
-        roughstep_slider.setValue(50);
+        roughprecisionadaptive_slider.setValue(roughprecisionadaptive_val[2]);
+        roughstepadaptive_slider.setValue(roughstepadaptive_val[2]);
+        roughstep_slider.setValue(roughstep_val[2]);
 
         updateFields();
-    }
-
-    void initSlider(Slider slider, double min, double max, double step) {
-        slider.setMin(min);
-        slider.setMax(max);
-        slider.setMajorTickUnit(step);
-        slider.setMinorTickCount(0);
-        slider.setSnapToTicks(true);
-    }
-
-    void initSliderInt(Slider slider, int min, int max, int step) {
-        slider.setMin(min);
-        slider.setMax(max);
-        slider.setMajorTickUnit(step);
-        slider.setMinorTickCount(0);
-        slider.setSnapToTicks(true);
-    }
-
-    void bind(TextField tf, Slider s) {
-        tf.setOnAction(e->s.setValue(Double.parseDouble(tf.getText())));
-        s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%.2f", n)));
-    }
-
-    void bindInt(TextField tf, Slider s) {
-        tf.setOnAction(e->s.setValue(Integer.parseInt(tf.getText())));
-        s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%d", n.intValue())));
     }
 
     void updateFields() {

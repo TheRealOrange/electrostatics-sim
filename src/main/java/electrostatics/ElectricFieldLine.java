@@ -4,11 +4,11 @@ import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
 
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
-public class ElectricFieldLine extends FieldLine {
+public class ElectricFieldLine extends FieldLine implements Cloneable {
     private static int fine_compute_distance = 1000;
 
     private static double fine_precision_adaptive = 0.5;
@@ -84,6 +84,7 @@ public class ElectricFieldLine extends FieldLine {
             t += step[0];
             if (solver instanceof AdaptiveRungeKutta) step[0] = nextstep[0];
         }
+        if (super.solver.getFunc().apply(0.0, point).magnitude() < 1e-6 && d < 1000) { super.setPoints(new ArrayList<>()); super.add(start); }
         super.future.complete(null);
     }
 
@@ -109,6 +110,13 @@ public class ElectricFieldLine extends FieldLine {
 
     public void setCharge(Particle charge) {
         this.charge = charge;
+    }
+
+    public FieldLine clone() {
+        ElectricFieldLine efl = new ElectricFieldLine(this.charge, this.start, super.solver, this.func, super.future, this.linenum, this.numsteps, this.precision, this.maxstep);
+        efl.setPoints(this.getPoints());
+        efl.end = this.end.clone();
+        return efl;
     }
 
     public static double getFine_compute_distance() {

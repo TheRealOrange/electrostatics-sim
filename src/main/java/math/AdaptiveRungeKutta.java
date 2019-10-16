@@ -2,7 +2,7 @@ package math;
 
 import java.util.function.BiFunction;
 
-public class AdaptiveRungeKutta extends RungeKutta {
+public class AdaptiveRungeKutta extends RungeKutta implements Cloneable {
     private double maxstep;
     private double minstep;
     private int order;

@@ -42,6 +42,9 @@ public class uiController {
     private boolean render;
     private boolean mode;
 
+    private boolean drawfield;
+    private boolean drawpotential;
+
     @FXML
     private ResourceBundle resources;
 
@@ -149,7 +152,6 @@ public class uiController {
             Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
             canvas.getChildren().add(charge);
             charge.getOnMouseClicked().handle(null);
-            System.out.println("ok");
         }
     }
 
@@ -206,7 +208,19 @@ public class uiController {
 
     @FXML
     void ufieldParams(MouseEvent event) {
+        App.controller.activate("potential");
+    }
 
+    @FXML
+    void toggleDrawField(MouseEvent event) {
+        drawfield = !drawfield; boolean tmp = render;
+        render = true; display(); render = tmp;
+    }
+
+    @FXML
+    void toggleDrawPotential(MouseEvent event) {
+        drawpotential = !drawpotential; boolean tmp = render;
+        render = true; display(); render = tmp;
     }
 
     @FXML
@@ -267,29 +281,16 @@ public class uiController {
 
         ufieldsolver.getSelectionModel().select(5);
 
-        SpinnerValueFactory factory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 8, 1.6);
+        SpinnerValueFactory factory1 = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 8, 1.6);
+        chargeval.setValueFactory(factory1);
 
-        chargeval.setValueFactory(factory);
+        SpinnerValueFactory factory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1, 1);
+        efieldlineweight.setValueFactory(factory2);
 
-        Pattern validEditingState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+        SpinnerValueFactory factory3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1, 1);
+        ufieldlineweight.setValueFactory(factory3);
 
-        UnaryOperator<TextFormatter.Change> filter = c -> {
-            String text = c.getControlNewText();
-            if (validEditingState.matcher(text).matches()) return c;
-            else return null;
-        };
-
-        StringConverter<Double> converter = new StringConverter<>() {
-            @Override
-            public Double fromString(String s) {
-                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s) || Double.valueOf(s) < 1 || Double.valueOf(s) > 100) return 10.0 ;
-                else return Double.valueOf(s);
-            }
-            @Override
-            public String toString(Double d) { return d.toString(); }
-        };
-
-        TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 10.0, filter);
+        TextFormatter<Double> textFormatter = utility.doubleFormatter(1, 100, 10);
         radiusval.setTextFormatter(textFormatter);
 
         this.potentiallines = new ArrayList<>();
@@ -298,23 +299,29 @@ public class uiController {
         this.render = true;
         this.mode = false;
 
+        this.drawpotential = true;
+        this.drawfield = true;
+
+        drawfieldlines.setSelected(true);
+        drawpotentiallines.setSelected(true);
+
         Movable.init(canvas, new Node[]{menu, generalmenu, viewmenu, settingsmenu});
         toggleRender(null);
 
         radiusval.getTextFormatter().valueProperty().addListener(e -> {
-            System.out.println("okcan");
             if (mode && this.selected != null) {
                 editCharge.editRadius(this.selected, Double.parseDouble(radiusval.getText()));
                 compute(); display();
             }
         });
         chargeval.getValueFactory().valueProperty().addListener(e -> {
-            System.out.println("okno");
             if (mode && this.selected != null) {
                 editCharge.editCharge(this.selected, chargeval.getValue());
                 compute(); display();
             }
         });
+
+
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
@@ -377,14 +384,14 @@ public class uiController {
             this.potentiallines = new ArrayList<>();
             this.fieldlines = new ArrayList<>();
             if (render) {
-                /*for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
+                if (drawpotential) for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
                     Potential p = new Potential(pfl);
                     canvas.getChildren().add(p);
                     p.draw();
                     potentiallines.add(p);
-                }*/
+                }
 
-                for (ElectricFieldLine efl : App.model.getFieldLines()) {
+                if (drawfield) for (ElectricFieldLine efl : App.model.getFieldLines()) {
                     Field f = new Field(efl);
                     canvas.getChildren().add(f);
                     f.draw();

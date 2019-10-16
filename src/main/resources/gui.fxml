@@ -30,8 +30,8 @@
                         <Button fx:id="addcharge" layoutX="28.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#addCharge" text="Add Charge" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0" />
                         <Spinner fx:id="chargeval" layoutX="25.0" layoutY="41.0" prefHeight="27.0" prefWidth="138.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="85.0" AnchorPane.topAnchor="30.0" />
                         <Label layoutX="152.0" layoutY="46.0" text="x 10e-19 C" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />
-                        <CheckBox fx:id="drawfieldlines" layoutX="27.0" layoutY="188.0" mnemonicParsing="false" text="Field Lines" AnchorPane.topAnchor="165.0" />
-                        <CheckBox fx:id="drawpotentiallines" layoutX="27.0" layoutY="216.0" mnemonicParsing="false" text="Equipotential Lines" AnchorPane.topAnchor="190.0" />
+                        <CheckBox fx:id="drawfieldlines" layoutX="27.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#toggleDrawField" text="Field Lines" AnchorPane.topAnchor="165.0" />
+                        <CheckBox fx:id="drawpotentiallines" layoutX="27.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#toggleDrawPotential" text="Equipotential Lines" AnchorPane.topAnchor="190.0" />
                         <Label layoutX="43.0" layoutY="40.0" text="Radius" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="70.0" />
                         <TextField fx:id="radiusval" layoutX="27.0" layoutY="97.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="90.0" />
                         <Label layoutX="162.0" layoutY="56.0" text="nm" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="95.0" />
