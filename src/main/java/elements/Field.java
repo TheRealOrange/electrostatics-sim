@@ -8,7 +8,6 @@ import math.Vector2D;
 import java.util.ArrayList;
 
 public class Field extends Polyline implements CanvasNode {
-    private Vector2D newoffset;
     private ElectricFieldLine efl;
     ArrayList<Double> points;
 

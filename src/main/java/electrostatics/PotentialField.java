@@ -1,5 +1,6 @@
 package electrostatics;
 
+import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
 
@@ -31,7 +32,7 @@ public class PotentialField extends Field {
                         CompletableFuture<Void> f = new CompletableFuture<>();
                         futures.add(f);
                         potential = func.apply(efl.getPoints().get(i));
-                        super.lines.add(new PotentialFieldLine(efl.getPoints().get(i), solver, f, this.func.apply(efl.getPoints().get(i)), efl.getCharge().getPosition()));
+                        super.lines.add(new PotentialFieldLine(efl.getPoints().get(i), (super.solver instanceof AdaptiveRungeKutta)?((AdaptiveRungeKutta) super.solver).clone():super.solver.clone(), f, this.func.apply(efl.getPoints().get(i)), efl.getCharge().getPosition()));
                     }
                 }
             }
