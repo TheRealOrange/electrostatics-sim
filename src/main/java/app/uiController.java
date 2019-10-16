@@ -377,12 +377,12 @@ public class uiController {
             this.potentiallines = new ArrayList<>();
             this.fieldlines = new ArrayList<>();
             if (render) {
-                for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
+                /*for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
                     Potential p = new Potential(pfl);
                     canvas.getChildren().add(p);
                     p.draw();
                     potentiallines.add(p);
-                }
+                }*/
 
                 for (ElectricFieldLine efl : App.model.getFieldLines()) {
                     Field f = new Field(efl);

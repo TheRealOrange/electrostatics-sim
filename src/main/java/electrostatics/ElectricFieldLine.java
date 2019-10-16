@@ -5,6 +5,7 @@ import math.RungeKutta;
 import math.Vector2D;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class ElectricFieldLine extends FieldLine {
@@ -22,7 +23,7 @@ public class ElectricFieldLine extends FieldLine {
 
     public static final double EPSILON = Double.longBitsToDouble(971l << 52);
 
-    private Function<Vector2D, Double> func;
+    private BiFunction<Vector2D, Vector2D, Double> func;
     private int numsteps;
     private double[] step;
 
@@ -35,11 +36,11 @@ public class ElectricFieldLine extends FieldLine {
 
     private Particle charge;
 
-    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Double> func, CompletableFuture<Void> future, int linenum) {
+    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, BiFunction<Vector2D, Vector2D, Double> func, CompletableFuture<Void> future, int linenum) {
         this(charge, start, solver, func, future, linenum, num_steps, rough_precision_adaptive, rough_step_adaptive);
     }
 
-    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Double> func, CompletableFuture<Void> future, int linenum, int numsteps, double precision, double maxstep) {
+    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, BiFunction<Vector2D, Vector2D, Double> func, CompletableFuture<Void> future, int linenum, int numsteps, double precision, double maxstep) {
         super(start, solver, future);
         this.func = func;
         this.numsteps = numsteps;
@@ -53,12 +54,13 @@ public class ElectricFieldLine extends FieldLine {
     @Override
     public void run() {
         Vector2D point = this.start.clone();
+        Vector2D prev = point.clone();
         add(point);
 
         double dist = 0;
         double t = 0;
 
-        double d = this.func.apply(point);
+        double d = this.func.apply(prev, point);
         dist = Math.abs(d) * unit;
 
         double[] nextstep = new double[]{this.step[0]};
@@ -72,10 +74,11 @@ public class ElectricFieldLine extends FieldLine {
                 ((AdaptiveRungeKutta) solver).setMaxstep(maxstep);
             } else this.step[0] = (dist < fine_compute_distance) ? fine_step : rough_step;
 
+            prev = point.clone();
             point = solver.step(point, t, step, nextstep, precision);
             //System.out.println(point);
-            d = this.func.apply(point);
-            if (d <= 0) { end = point.clone(); break; }
+            d = this.func.apply(prev, point);
+            if (d <= 0) { end = point.clone(); add(end); break; }
             add(point);
 
             t += step[0];

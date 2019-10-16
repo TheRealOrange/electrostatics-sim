@@ -7,13 +7,14 @@ import math.Vector2D;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class ElectricField extends Field {
-    private Function<Vector2D, Double> func;
+    private BiFunction<Vector2D, Vector2D, Double> func;
     private int linedensity;
 
-    public ElectricField(ThreadPoolExecutor threadpool, ArrayList<Particle> charges, RungeKutta solver, Function<Vector2D, Double> func, int linedensity) {
+    public ElectricField(ThreadPoolExecutor threadpool, ArrayList<Particle> charges, RungeKutta solver, BiFunction<Vector2D, Vector2D, Double> func, int linedensity) {
         super(threadpool, charges, solver);
         this.linedensity = linedensity;
         this.func = func;

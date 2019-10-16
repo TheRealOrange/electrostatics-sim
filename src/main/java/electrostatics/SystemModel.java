@@ -63,18 +63,32 @@ public class SystemModel {
         return false;
     }
 
-    public double checkCollision(Vector2D pos) {
+    public double checkCollision(Vector2D pos1, Vector2D pos2) {
         double mindist = Double.MAX_VALUE;
         double dist;
+        double dRadius;
         double dLen;
+        double dA, dB, dC;
+        double dDistToLine;
         boolean collision = false;
         for (Particle p : this.charges) {
-            dist = p.getPosition().sub(pos).magnitude();
+            dist = p.getPosition().sub(pos2).magnitude();
             mindist = Math.min(mindist, dist);
-            if (dist <= (p.getRadius()))
+            dRadius = p.getRadius() + 0.1;
+            if (dist <= dRadius)
                 collision = true;
             else {
-                dLen =
+                dLen = pos2.sub(pos1).magnitude();
+                if (dLen > dRadius) {
+                    // x(y2-y1) + y(x1-x2) + y1(x2-x1)-x1(y2-y1)=0
+                    dA = pos2.getY() - pos1.getY();
+                    dB = pos1.getX() - pos2.getX();
+                    dC = pos1.getY() * (pos2.getX() - pos1.getX()) - pos1.getX() * (pos2.getY()-pos1.getY());
+                    dDistToLine = Math.abs(dA * p.getPosition().getX() + dB*p.getPosition().getY()+dC)/Math.sqrt(dA*dA+dB*dB);
+                    if (dDistToLine<=dRadius)
+                        collision = true;
+                }
+
             }
         }
         return (collision)?-mindist:mindist;
