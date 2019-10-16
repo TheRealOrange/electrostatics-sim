@@ -11,9 +11,9 @@ public class PotentialFieldLine extends FieldLine {
     private static double step_amt_adaptive = 0.001;
 
     private static int num_steps = 15000;
-    private static double step_amt = 0.0001;
+    private static double step_amt = 0.1;
 
-    private static double tolerance = 1e-3;
+    private static double tolerance = 1e-2;
 
     private double potential;
     private Vector2D wcenter;

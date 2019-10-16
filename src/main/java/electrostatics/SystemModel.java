@@ -26,7 +26,7 @@ public class SystemModel {
         this.origin = origin.clone();
         this.efieldsolver = efieldsolver;
         this.ufieldsolver = ufieldsolver;
-        this.potentialint = 10;
+        this.potentialint = 0.1;
         this.linedensity = 1;
         this.threadpool = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
         this.efield = new ElectricField(this.threadpool, this.charges, this.efieldsolver, this::checkCollision, this.linedensity);
