@@ -9,6 +9,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import screens.ScreenController;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class App extends Application {
     public static SystemModel model;
     public static ScreenController controller;
@@ -19,10 +22,13 @@ public class App extends Application {
 
         controller = new ScreenController(scene, getClass());
 
-        controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml")));
-        controller.addScreen("splash", FXMLLoader.load(getClass().getResource("/splash.fxml")));
-        controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml")));
-        controller.addScreen("potential", FXMLLoader.load(getClass().getResource("/potentialparams.fxml")));
+        Locale l = new Locale("en", "US");
+        ResourceBundle rb = ResourceBundle.getBundle("LanguageBundle", l);
+        System.out.println(rb);
+        controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml"), rb));
+        controller.addScreen("splash", FXMLLoader.load(getClass().getResource("/splash.fxml"), rb));
+        controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml"), rb));
+        controller.addScreen("potential", FXMLLoader.load(getClass().getResource("/potentialparams.fxml"), rb));
 
         controller.activate("gui");
 

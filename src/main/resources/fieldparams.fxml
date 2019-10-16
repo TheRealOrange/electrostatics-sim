@@ -38,17 +38,17 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Resolution Threshold" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label text="%resthreshold" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label text="%precisionadaptive" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <TextField fx:id="resolutionthreshold" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
       <TextField fx:id="roughprecisionadaptive" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
       <TextField fx:id="finestepadaptive" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
-      <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <Label text="%stepsizeadaptive" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <Label GridPane.columnIndex="1" GridPane.rowIndex="12" />
-      <Label text="Low Resolution" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-      <Label text="High Resolution" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-      <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+      <Label text="%lowresolution" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+      <Label text="%highresolution" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label text="%precisionadaptive" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+      <Label text="%stepsizeadaptive" GridPane.columnIndex="1" GridPane.rowIndex="13" />
       <Slider fx:id="resolutionthreshold_slider" GridPane.columnIndex="3" GridPane.rowIndex="3" />
       <Slider fx:id="fineprecisionadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="7" />
       <Slider fx:id="finestepadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="8" />
@@ -65,10 +65,10 @@
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="10" />
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" />
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-      <Label text="Electric Field Render Parameters" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Button fx:id="cancelButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#cancelClicked" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
-      <Button fx:id="applyButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#applyClicked" text="Apply" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
-      <Label text="Step Count" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label text="%electricfieldrenderparams" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Button fx:id="cancelButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#cancelClicked" text="%cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
+      <Button fx:id="applyButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#applyClicked" text="%apply" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="16" />
+      <Label text="%stepcount" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <TextField fx:id="stepcount" layoutX="219.0" layoutY="85.0" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <Slider fx:id="stepcount_slider" layoutX="274.0" layoutY="88.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
    </children>

@@ -1,12 +1,13 @@
 package app;
 
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
 import canvas.*;
 import electrostatics.ElectricFieldLine;
@@ -14,10 +15,8 @@ import electrostatics.Particle;
 import electrostatics.PotentialFieldLine;
 import electrostatics.SystemModel;
 import elements.Charge;
-import elements.DrawLine;
 import elements.Field;
 import elements.Potential;
-import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -26,7 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.StringConverter;
+import javafx.stage.FileChooser;
 import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
@@ -35,7 +34,6 @@ public class uiController {
     private ArrayList<Charge> charges;
     private ArrayList<Field> fieldlines;
     private ArrayList<Potential> potentiallines;
-    private double scaling;
     private Charge selected;
 
     private boolean updating;
@@ -113,9 +111,6 @@ public class uiController {
     private Spinner<Integer> ufieldlineweight;
 
     @FXML
-    private Spinner<Integer> dispscale;
-
-    @FXML
     private ComboBox<String> disptheme;
 
     @FXML
@@ -153,6 +148,7 @@ public class uiController {
             Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
             canvas.getChildren().add(charge);
             charge.getOnMouseClicked().handle(null);
+            this.charges.add(charge);
         }
     }
 
@@ -164,11 +160,11 @@ public class uiController {
     @FXML
     void toggleMode(MouseEvent event) {
         if (mode) {
-            togglemode.setText("Edit");
+            togglemode.setText("%edit");
             addcharge.setDisable(false);
         }
         else {
-            togglemode.setText("Move");
+            togglemode.setText("%move");
             addcharge.setDisable(true);
         }
         mode = !mode;
@@ -184,22 +180,82 @@ public class uiController {
 
     @FXML
     void loadFile(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Simulation Files (*.sim)", "*.sim"));
+        fileChooser.setTitle("Save file");
+        fileChooser.setInitialFileName("electrostatics.sim");
+        File savedFile = fileChooser.showOpenDialog(savefile.getScene().getWindow());
 
+        if (savedFile != null) {
+            try {
+                App.model = new SystemModel(savedFile);
+                ufieldsolver.getSelectionModel().select(0);
+                ufieldsolver.getSelectionModel().select(1);
+                ufieldsolver.getSelectionModel().select(App.model.getUfieldsolver_id());
+
+                ufieldlineweight.getValueFactory().setValue(1);
+                ufieldlineweight.getValueFactory().setValue(2);
+                ufieldlineweight.getValueFactory().setValue(App.model.getConfig().getP_weight());
+
+                ufieldlinestyle.getSelectionModel().select(0);
+                ufieldlinestyle.getSelectionModel().select(1);
+                ufieldlinestyle.getSelectionModel().select(App.model.getConfig().getP_style());
+
+                efieldsolver.getSelectionModel().select(0);
+                efieldsolver.getSelectionModel().select(1);
+                efieldsolver.getSelectionModel().select(App.model.getEfieldsolver_id());
+
+                efieldlineweight.getValueFactory().setValue(1);
+                efieldlineweight.getValueFactory().setValue(2);
+                efieldlineweight.getValueFactory().setValue(App.model.getConfig().getE_weight());
+
+                efieldlinestyle.getSelectionModel().select(0);
+                efieldlinestyle.getSelectionModel().select(1);
+                efieldlinestyle.getSelectionModel().select(App.model.getConfig().getE_style());
+                for (Charge c : this.charges){
+                    canvas.getChildren().remove(c);
+                } this.charges = new ArrayList<>();
+                for (Particle p : App.model.getCharges()) {
+                    Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
+                    canvas.getChildren().add(charge);
+                }
+                boolean tmp = render;
+                render = true;
+                compute();
+                display();
+                render = tmp;
+            } catch(IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
     void saveFile(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Simulation Files (*.sim)", "*.sim"));
+        fileChooser.setTitle("Save file");
+        File savedFile = fileChooser.showSaveDialog(savefile.getScene().getWindow());
 
+        if (savedFile != null) {
+            try {
+                App.model.saveToFile(savedFile);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
     void toggleRender(MouseEvent event) {
         if (render) {
-            togglerender.setText("Start Render");
+            togglerender.setText("%startrender");
             forcerender.setDisable(false);
         }
         else {
-            togglerender.setText("Stop Render");
+            togglerender.setText("%stoprender");
             forcerender.setDisable(true);
         }
         render = !render;
@@ -246,7 +302,6 @@ public class uiController {
         assert efieldlineweight != null : "fx:id=\"efieldlineweight\" was not injected: check your FXML file 'gui.fxml'.";
         assert ufieldlinestyle != null : "fx:id=\"ufieldlinestyle\" was not injected: check your FXML file 'gui.fxml'.";
         assert ufieldlineweight != null : "fx:id=\"ufieldlineweight\" was not injected: check your FXML file 'gui.fxml'.";
-        assert dispscale != null : "fx:id=\"dispscale\" was not injected: check your FXML file 'gui.fxml'.";
         assert disptheme != null : "fx:id=\"disptheme\" was not injected: check your FXML file 'gui.fxml'.";
         assert settingsmenu != null : "fx:id=\"settingsmenu\" was not injected: check your FXML file 'gui.fxml'.";
         assert settingspane != null : "fx:id=\"settingspane\" was not injected: check your FXML file 'gui.fxml'.";
@@ -266,20 +321,18 @@ public class uiController {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 11) {
                 System.out.println(methods[new_value.intValue()] + " selected");
                 App.model.setEfieldsolver(selectSolver(App.model::solveField, new_value.intValue()));
+                App.model.setEfieldsolver_id(new_value.intValue());
             }
         });
-
-        efieldsolver.getSelectionModel().select(5);
 
         ufieldsolver.setItems(FXCollections.observableArrayList(methods));
         ufieldsolver.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 11) {
                 System.out.println(methods[new_value.intValue()] + " selected");
                 App.model.setUfieldsolver(selectSolver(App.model::solvePotential, new_value.intValue()));
+                App.model.setUfieldsolver_id(new_value.intValue());
             }
         });
-
-        ufieldsolver.getSelectionModel().select(5);
 
         SpinnerValueFactory factory1 = new SpinnerValueFactory.DoubleSpinnerValueFactory(-160, 160, 8, 1.6);
         chargeval.setValueFactory(factory1);
@@ -296,6 +349,22 @@ public class uiController {
             Potential.setLineWeight(ufieldlineweight.getValue());
         });
 
+        SpinnerValueFactory factory4 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 8, 1, 1);
+        efieldlinedensity.setValueFactory(factory4);
+        efieldlinedensity.getValueFactory().valueProperty().addListener(e->{
+            App.model.setLinedensity(efieldlinedensity.getValue());
+            compute();
+            display();
+        });
+
+        SpinnerValueFactory factory5 = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1, 0.1, 0.01);
+        uinterval.setValueFactory(factory5);
+        uinterval.getValueFactory().valueProperty().addListener(e->{
+            App.model.setPotentialint(uinterval.getValue());
+            compute();
+            display();
+        });
+
         String[] style = { "-fx-stroke-dash-array: 1 0;", "-fx-stroke-dash-array: 12 10;", "-fx-stroke-dash-array: 2 4;" };
         double[][] stroke = {{1.0, 0.0}, {12.0, 10.0}, {2.0, 4.0}};
 
@@ -304,7 +373,7 @@ public class uiController {
         efieldlinestyle.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 2) {
                 System.out.println(style[new_value.intValue()] + " selected");
-                Field.setLineStyle(stroke[new_value.intValue()]);
+                Field.setLineStyle(stroke[new_value.intValue()]); Field.setStyle_num(new_value.intValue());
             }
         }); efieldlinestyle.setButtonCell(efieldlinestyle.getCellFactory().call(null));
 
@@ -313,13 +382,31 @@ public class uiController {
         ufieldlinestyle.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 2) {
                 System.out.println(style[new_value.intValue()] + " selected");
-                Potential.setLineStyle(stroke[new_value.intValue()]);
+                Potential.setLineStyle(stroke[new_value.intValue()]); Potential.setStyle_num(new_value.intValue());
             }
         }); ufieldlinestyle.setButtonCell(ufieldlinestyle.getCellFactory().call(null));
+
+        String[] theme = {"Light", "Dark"};
+        disptheme.setItems(FXCollections.observableArrayList(theme));
+        disptheme.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
+            if (new_value.intValue() >= 0 && new_value.intValue() <= 1) {
+                System.out.println(theme[new_value.intValue()] + " selected");
+                if (new_value.intValue() == 1) {
+                    App.controller.getScreen("gui").getStyleClass().add("dark");
+                    App.controller.getScreen("potential").getStyleClass().add("dark");
+                    App.controller.getScreen("field").getStyleClass().add("dark");
+                } else {
+                    App.controller.getScreen("gui").getStyleClass().remove("dark");
+                    App.controller.getScreen("potential").getStyleClass().remove("dark");
+                    App.controller.getScreen("field").getStyleClass().remove("dark");
+                }
+            }
+        }); //disptheme.getSelectionModel().select(1);
 
         TextFormatter<Double> textFormatter = utility.doubleFormatter(1, 100, 10);
         radiusval.setTextFormatter(textFormatter);
 
+        this.charges = new ArrayList<>();
         this.potentiallines = new ArrayList<>();
         this.fieldlines = new ArrayList<>();
         this.updating = false;
@@ -349,7 +436,9 @@ public class uiController {
         });
 
         ufieldlinestyle.getSelectionModel().select(0);
+        ufieldsolver.getSelectionModel().select(5);
         efieldlinestyle.getSelectionModel().select(0);
+        efieldsolver.getSelectionModel().select(5);
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
@@ -375,6 +464,7 @@ public class uiController {
         if (menu.intersects(pos.getX(), pos.getY(), 1, 1)) {
             App.model.removeCharge(c.getCharge());
             canvas.getChildren().remove(c);
+            charges.remove(c);
         }
         return true;
     }
@@ -408,6 +498,8 @@ public class uiController {
         synchronized (canvas.getChildren()) {
             for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
             for (Field p : this.fieldlines) canvas.getChildren().remove(p);
+            Potential.clear();
+            Field.clear();
 
             this.potentiallines = new ArrayList<>();
             this.fieldlines = new ArrayList<>();

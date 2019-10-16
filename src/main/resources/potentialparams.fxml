@@ -32,9 +32,9 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Label text="Precision Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <Label text="%precisionadaptive" GridPane.columnIndex="1" GridPane.rowIndex="6" />
         <TextField fx:id="stepadaptive" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-        <Label text="Step Size Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+        <Label text="%stepsizeadaptive" GridPane.columnIndex="1" GridPane.rowIndex="7" />
         <Slider fx:id="precisionadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="6" />
         <Slider fx:id="stepadaptive_slider" GridPane.columnIndex="3" GridPane.rowIndex="7" />
         <TextField fx:id="precisionadaptive" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
@@ -43,13 +43,13 @@
         <Label layoutX="78.0" layoutY="319.0" text="Step Size" GridPane.columnIndex="1" GridPane.rowIndex="8" />
         <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" />
         <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-        <Label text="Equipotential Lines Render Parameters" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-        <Button fx:id="cancelButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#cancelClicked" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
-        <Button fx:id="applyButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#applyClicked" text="Apply" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
-        <Label text="Step Count Adaptive" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="%equipotentiallinesrenderparams" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+        <Button fx:id="cancelButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#cancelClicked" text="%cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+        <Button fx:id="applyButton" maxWidth="120.0" minWidth="120.0" mnemonicParsing="false" onAction="#applyClicked" text="%apply" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+        <Label text="%stepcountadaptive" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField fx:id="stepcountadaptive" layoutX="219.0" layoutY="85.0" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
         <Slider fx:id="stepcountadaptive_slider" layoutX="274.0" layoutY="88.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Label text="Step Count" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label text="%stepcount" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <TextField fx:id="stepcount" maxHeight="20.0" maxWidth="60.0" minHeight="20.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <Slider fx:id="stepcount_slider" GridPane.columnIndex="3" GridPane.rowIndex="4" />
     </children>

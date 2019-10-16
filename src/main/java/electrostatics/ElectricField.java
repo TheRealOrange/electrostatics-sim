@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class ElectricField extends Field {
     private BiFunction<Vector2D, Vector2D, Double> func;

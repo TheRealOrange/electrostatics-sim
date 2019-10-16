@@ -119,7 +119,7 @@ public class ElectricFieldLine extends FieldLine implements Cloneable {
         return efl;
     }
 
-    public static double getFine_compute_distance() {
+    public static int getFine_compute_distance() {
         return fine_compute_distance;
     }
 

@@ -2,15 +2,18 @@ package electrostatics;
 
 import math.RungeKutta;
 import math.Vector2D;
+import serialize.Serialize;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class SystemModel {
-    private Vector2D origin;
     private ArrayList<Particle> charges;
     private ElectricField efield;
     private PotentialField ufield;
@@ -22,20 +25,34 @@ public class SystemModel {
     private RungeKutta efieldsolver;
     private RungeKutta ufieldsolver;
 
+    private int efieldsolver_id;
+    private int ufieldsolver_id;
+
+    private Config config;
+
+    public SystemModel(File f) throws IOException, ClassNotFoundException {
+        this();
+        HashMap<String, Object> map = (new Serialize<HashMap<String, Object>>()).readFile(f);
+        this.charges = ((ArrayList<Particle>) map.get("particles"));
+        this.config = ((Config) map.get("config"));
+        this.config.applyConfig(this);
+        for (Particle p : this.charges) System.out.println(p.getPosition());
+    }
+
     public SystemModel(ArrayList<Particle> charges, Vector2D origin, RungeKutta efieldsolver, RungeKutta ufieldsolver) {
         this.charges = new ArrayList<>(charges);
-        this.origin = origin.clone();
         this.efieldsolver = efieldsolver;
         this.ufieldsolver = ufieldsolver;
         this.potentialint = 0.1;
         this.linedensity = 1;
+        this.config = new Config(this);
         this.threadpool = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
         this.efield = new ElectricField(this.threadpool, this.charges, this.efieldsolver, this::checkCollision, this.linedensity);
         this.ufield = new PotentialField(this.threadpool, this.charges, this.ufieldsolver, this::potential, null, this.potentialint);
     }
 
     public SystemModel() {
-        this(new ArrayList<Particle>(), new Vector2D(), null, null);
+        this(new ArrayList<>(), new Vector2D(), null, null);
     }
 
     public void compute() throws InterruptedException, ExecutionException {
@@ -70,9 +87,8 @@ public class SystemModel {
         for (int n = 0;n < equipotentials.size();++n) {
             apl = equipotentials.get(n);
             for (int j = 0;j < apl.size();++j) {
-                for (int k = j+1;k < apl.size() && duplicate.get(n).get(j);++k) {
-                    System.out.println(apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() + ", " + apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude());
-                    if (apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() < 35 && apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude() < 5) {
+                for (int k = j+1;k < apl.size()/* && duplicate.get(n).get(j)*/;++k) {
+                    if (apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() < 35 && apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude() < 10) {
                         duplicate.get(n).set(k, false);
                     }
                 }
@@ -89,6 +105,14 @@ public class SystemModel {
         }
 
         this.ufield.setLines(newlines);
+    }
+
+    public void saveToFile(File file) throws IOException {
+        Config config = new Config(this);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("config", config);
+        map.put("particles", this.charges);
+        (new Serialize<HashMap<String, Object>>()).writeFile(map, file);
     }
 
     public Particle getParticleAt(Vector2D pos) {
@@ -171,14 +195,6 @@ public class SystemModel {
         return field.unit();
     }
 
-    public Vector2D getOrigin() {
-        return this.origin;
-    }
-
-    public void setOrigin(Vector2D origin) {
-        this.origin = origin;
-    }
-
     public double getPotentialint() {
         return potentialint;
     }
@@ -236,5 +252,29 @@ public class SystemModel {
         ArrayList<ElectricFieldLine> lines = new ArrayList<>();
         for (FieldLine efl : this.efield.getLines()) lines.add((ElectricFieldLine) efl);
         return lines;
+    }
+
+    public int getEfieldsolver_id() {
+        return efieldsolver_id;
+    }
+
+    public void setEfieldsolver_id(int efieldsolver_id) {
+        this.efieldsolver_id = efieldsolver_id;
+    }
+
+    public int getUfieldsolver_id() {
+        return ufieldsolver_id;
+    }
+
+    public void setUfieldsolver_id(int ufieldsolver_id) {
+        this.ufieldsolver_id = ufieldsolver_id;
+    }
+
+    public Config getConfig() {
+        return config;
+    }
+
+    public ArrayList<Particle> getCharges() {
+        return charges;
     }
 }

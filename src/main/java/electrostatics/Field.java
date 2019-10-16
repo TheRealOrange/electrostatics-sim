@@ -5,7 +5,6 @@ import math.Vector2D;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.function.Function;
 
 public abstract class Field {
     ThreadPoolExecutor threadpool;

@@ -1,18 +1,22 @@
 package elements;
 
 import electrostatics.PotentialFieldLine;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 
 public class Potential extends DrawLine {
     private static ArrayList<Field> objs = new ArrayList<>();
-    private static double weight = 1;
+    private static int weight = 1;
     private static double[] style ={1, 0};
+    private static int style_num = 0;
+    private static Paint color = Color.BLACK;
     public Potential(PotentialFieldLine pfl) {
         super(pfl);
     }
 
-    public static void setLineWeight(double weight) {
+    public static void setLineWeight(int weight) {
         Potential.weight = weight;
         for (Field f : objs) f.setStrokeWidth(Potential.weight);
     }
@@ -23,5 +27,28 @@ public class Potential extends DrawLine {
             f.getStrokeDashArray().clear();
             f.getStrokeDashArray().addAll(Potential.style[0], Potential.style[1]);
         }
+    }
+
+    public static void setLineColor(Paint p) {
+        Potential.color = p;
+        for (Field f : objs) {
+            f.setFill(p);
+        }
+    }
+
+    public static int getWeight() {
+        return weight;
+    }
+
+    public static int getStyle_num() {
+        return style_num;
+    }
+
+    public static void setStyle_num(int style_num) {
+        Potential.style_num = style_num;
+    }
+
+    public static void clear() {
+        objs = new ArrayList<>();
     }
 }

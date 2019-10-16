@@ -16,83 +16,79 @@
    <children>
       <Accordion fx:id="menu" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
         <panes>
-          <TitledPane fx:id="generalmenu" animated="false" text="General">
+          <TitledPane fx:id="generalmenu" animated="false" text="%general">
             <content>
               <AnchorPane fx:id="generalpane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="56.599999999999994" layoutY="289.8" text="Simulation" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="300.0" />
-                        <Label layoutX="56.599999999999994" layoutY="389.8" text="File" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="410.0" />
-                        <Button fx:id="togglerender" layoutX="56.599999999999994" layoutY="309.8" mnemonicParsing="false" onMouseClicked="#toggleRender" text="Start Render" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="320.0" />
-                        <Button fx:id="forcerender" layoutX="56.599999999999994" layoutY="344.8" mnemonicParsing="false" onMouseClicked="#forceRender" text="Render" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="355.0" />
-                        <Button fx:id="savefile" layoutX="56.599999999999994" layoutY="409.8" mnemonicParsing="false" onMouseClicked="#saveFile" text="Save to File" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="430.0" />
-                        <Button fx:id="loadfile" layoutX="56.599999999999994" layoutY="444.8" mnemonicParsing="false" onMouseClicked="#loadFile" text="Load File" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="465.0" />
+                        <Label layoutX="56.599999999999994" layoutY="289.8" text="%simulation" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="300.0" />
+                        <Label layoutX="56.599999999999994" layoutY="389.8" text="%file" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="410.0" />
+                        <Button fx:id="togglerender" layoutX="56.599999999999994" layoutY="309.8" mnemonicParsing="false" onMouseClicked="#toggleRender" text="%startrender" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="320.0" />
+                        <Button fx:id="forcerender" layoutX="56.599999999999994" layoutY="344.8" mnemonicParsing="false" onMouseClicked="#forceRender" text="%render" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="355.0" />
+                        <Button fx:id="savefile" layoutX="56.599999999999994" layoutY="409.8" mnemonicParsing="false" onMouseClicked="#saveFile" text="%savefile" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="430.0" />
+                        <Button fx:id="loadfile" layoutX="56.599999999999994" layoutY="444.8" mnemonicParsing="false" onMouseClicked="#loadFile" text="%loadfile" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="465.0" />
                         <Label layoutX="33.0" layoutY="30.0" text="Charge" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
-                        <Button fx:id="addcharge" layoutX="28.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#addCharge" text="Add Charge" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0" />
+                        <Button fx:id="addcharge" layoutX="28.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#addCharge" text="%addcharge" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0" />
                         <Spinner fx:id="chargeval" layoutX="25.0" layoutY="41.0" prefHeight="27.0" prefWidth="138.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="85.0" AnchorPane.topAnchor="30.0" />
                         <Label layoutX="152.0" layoutY="46.0" text="x 10e-19 C" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />
-                        <CheckBox fx:id="drawfieldlines" layoutX="27.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#toggleDrawField" text="Field Lines" AnchorPane.topAnchor="165.0" />
-                        <CheckBox fx:id="drawpotentiallines" layoutX="27.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#toggleDrawPotential" text="Equipotential Lines" AnchorPane.topAnchor="190.0" />
-                        <Label layoutX="43.0" layoutY="40.0" text="Radius" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="70.0" />
+                        <CheckBox fx:id="drawfieldlines" layoutX="27.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#toggleDrawField" text="%fieldlines" AnchorPane.topAnchor="165.0" />
+                        <CheckBox fx:id="drawpotentiallines" layoutX="27.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#toggleDrawPotential" text="%equipotentiallines" AnchorPane.topAnchor="190.0" />
+                        <Label layoutX="43.0" layoutY="40.0" text="%radius" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="70.0" />
                         <TextField fx:id="radiusval" layoutX="27.0" layoutY="97.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="90.0" />
                         <Label layoutX="162.0" layoutY="56.0" text="nm" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="95.0" />
-                        <Button fx:id="togglemode" layoutX="27.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#toggleMode" text="Edit" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="220.0" />
+                        <Button fx:id="togglemode" layoutX="27.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#toggleMode" text="%edit" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="220.0" />
                      </children>
                   </AnchorPane>
             </content>
           </TitledPane>
-          <TitledPane fx:id="viewmenu" animated="false" text="View">
+          <TitledPane fx:id="viewmenu" animated="false" text="%view">
             <content>
               <AnchorPane fx:id="viewpane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" text="Field Lines" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
-                        <Label layoutX="14.0" layoutY="44.0" text="Line Style" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="50.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="%fieldlines" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
+                        <Label layoutX="14.0" layoutY="44.0" text="%linestyle" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="50.0" />
                         <ComboBox fx:id="efieldlinestyle" layoutX="14.0" layoutY="61.0" prefWidth="150.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="70.0" />
-                        <Label layoutX="14.0" layoutY="95.0" text="Line Weight" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="105.0" />
+                        <Label layoutX="14.0" layoutY="95.0" text="%lineweight" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="105.0" />
                         <Spinner fx:id="efieldlineweight" layoutX="17.0" layoutY="112.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="125.0" />
                         <Label layoutX="116.0" layoutY="153.0" text="px" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="130.0" />
-                        <Label layoutX="22.0" layoutY="193.0" text="Potential Lines" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="190.0" />
-                        <Label layoutX="22.0" layoutY="223.0" text="Line Style" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="230.0" />
+                        <Label layoutX="22.0" layoutY="193.0" text="%potentiallines" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="190.0" />
+                        <Label layoutX="22.0" layoutY="223.0" text="%linestyle" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="230.0" />
                         <ComboBox fx:id="ufieldlinestyle" layoutX="22.0" layoutY="240.0" prefWidth="150.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="250.0" />
-                        <Label layoutX="22.0" layoutY="274.0" text="Line Weight" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="285.0" />
+                        <Label layoutX="22.0" layoutY="274.0" text="%lineweight" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="285.0" />
                         <Spinner fx:id="ufieldlineweight" layoutX="25.0" layoutY="291.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="305.0" />
                         <Label layoutX="124.0" layoutY="332.0" text="px" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="310.0" />
-                        <Label layoutX="26.0" layoutY="376.0" text="Display" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="370.0" />
-                        <Label layoutX="22.0" layoutY="399.0" text="Scale" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="400.0" />
-                        <Spinner fx:id="dispscale" layoutX="25.0" layoutY="416.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="420.0" />
-                        <Label layoutX="124.0" layoutY="457.0" text="\%" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="425.0" />
-                        <Label layoutX="31.0" layoutY="470.0" text="Theme" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="455.0" />
+                        <Label layoutX="31.0" layoutY="470.0" text="%theme" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="455.0" />
                         <ComboBox fx:id="disptheme" layoutX="25.0" layoutY="490.0" prefWidth="150.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="475.0" />
                      </children>
                   </AnchorPane>
             </content>
           </TitledPane>
-          <TitledPane fx:id="settingsmenu" animated="false" text="Settings">
+          <TitledPane fx:id="settingsmenu" animated="false" text="%settings">
             <content>
               <AnchorPane fx:id="settingspane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" text="Electric Field" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
-                        <Label layoutX="26.0" layoutY="50.0" text="Line Density" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="40.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="%electricfield" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
+                        <Label layoutX="26.0" layoutY="50.0" text="%linedensity" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="40.0" />
                         <Spinner fx:id="efieldlinedensity" layoutX="21.0" layoutY="67.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="60.0" />
-                        <Label layoutX="26.0" layoutY="104.0" text="lines per unit charge" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="90.0" />
-                        <Label layoutX="26.0" layoutY="140.0" text="Solver" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="130.0" />
+                        <Label layoutX="26.0" layoutY="104.0" text="%linespercharge" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="90.0" />
+                        <Label layoutX="26.0" layoutY="140.0" text="%solver" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="130.0" />
                         <ComboBox fx:id="efieldsolver" layoutX="27.0" layoutY="157.0" prefWidth="150.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="150.0" />
-                        <Button fx:id="efieldparams" layoutX="25.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#efieldParams" text="Advanced Parameters" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="185.0">
+                        <Button fx:id="efieldparams" layoutX="25.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#efieldParams" text="%advancedparams" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="185.0">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <Label layoutX="16.0" layoutY="244.0" text="Electric Potential" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="250.0" />
-                        <Label layoutX="28.0" layoutY="280.0" text="Line Interval" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="280.0" />
+                        <Label layoutX="16.0" layoutY="244.0" text="%electricpotential" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="250.0" />
+                        <Label layoutX="28.0" layoutY="280.0" text="%interval" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="280.0" />
                         <Spinner fx:id="uinterval" layoutX="23.0" layoutY="297.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="300.0" />
-                        <Label layoutX="28.0" layoutY="334.0" text="volts" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="330.0" />
-                        <Label layoutX="28.0" layoutY="370.0" text="Solver" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="360.0" />
+                        <Label layoutX="28.0" layoutY="334.0" text="V" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="330.0" />
+                        <Label layoutX="28.0" layoutY="370.0" text="%solver" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="360.0" />
                         <ComboBox fx:id="ufieldsolver" layoutX="29.0" layoutY="387.0" prefWidth="150.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="380.0" />
-                        <Button fx:id="ufieldparams" layoutX="27.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#ufieldParams" text="Advanced Parameters" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="415.0">
+                        <Button fx:id="ufieldparams" layoutX="27.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#ufieldParams" text="%advancedparams" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="415.0">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </Button>
-                        <Label layoutX="28.0" layoutY="472.0" text="Language" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="480.0" />
+                        <Label layoutX="28.0" layoutY="472.0" text="%language" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="480.0" />
                         <ComboBox fx:id="language" layoutX="26.0" layoutY="507.0" prefWidth="150.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="500.0" />
                      </children>
                   </AnchorPane>
