@@ -8,6 +8,7 @@ import javafx.scene.shape.Shape;
 import math.Vector2D;
 
 import java.util.ArrayList;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -19,7 +20,7 @@ public class Movable {
 
   private final Supplier<Vector2D> getcoords;
   private final Consumer<Vector2D> setcoords;
-  private final Runnable onclick;
+  private final Consumer<Movable> eventHandler;
 
   public static void init(Pane parent, Node[] objects) {
     Movable.parent = parent;
@@ -35,22 +36,15 @@ public class Movable {
     }
   }
 
-  public Movable(Shape shape, Supplier<Vector2D> getcoords, Consumer<Vector2D> setcoords, Runnable onclick) {
+  public Movable(Shape shape, Supplier<Vector2D> getcoords, Consumer<Vector2D> setcoords, Consumer<Movable> eventHandler) {
     this.shape = shape;
-    this.onclick = onclick;
+    this.eventHandler = eventHandler;
 
     this.getcoords = getcoords;
     this.setcoords = setcoords;
 
     shape.setOnMouseClicked(e -> {
-      if (currentObject == this) {
-        currentObject = null;
-        shape.toBack();
-        this.onclick.run();
-        return;
-      }
-      currentObject = this;
-      shape.toFront();
+      this.eventHandler.accept(this);
     });
     objects.add(this);
   }
@@ -78,5 +72,9 @@ public class Movable {
 
   public static Movable getCurrentObject() {
     return currentObject;
+  }
+
+  public static void setCurrentObject(Movable currentObject) {
+    Movable.currentObject = currentObject;
   }
 }
