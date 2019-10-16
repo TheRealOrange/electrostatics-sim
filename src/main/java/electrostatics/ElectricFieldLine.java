@@ -74,7 +74,7 @@ public class ElectricFieldLine extends FieldLine {
             add(point);
             //System.out.println(point);
 
-            if (d <= 0) { end = point.clone();break; }
+            if (d <= 0) { end = point.clone(); break; }
 
             t += step[0];
             if (solver instanceof AdaptiveRungeKutta) step[0] = nextstep[0];

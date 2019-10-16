@@ -39,7 +39,7 @@ public class AdaptiveRungeKutta extends RungeKutta {
 
             double error = Math.abs(highsum.sub(lowsum).magnitude()*h[0]);
 
-            if (error <= tolerance || i > 10000 || Math.abs(h[0]) <= minstep) {
+            if (error <= tolerance || i > 1000 || Math.abs(h[0]) <= minstep) {
                 Vector2D result = curr.add(highsum.mul(h[0]));
 
                 if (error <= Double.MIN_VALUE) next_h[0] = 2*h[0];
@@ -54,6 +54,10 @@ public class AdaptiveRungeKutta extends RungeKutta {
 
             h[0] *= 0.9 * Math.pow(tolerance/error, 1/this.order);
         }
+    }
+
+    public AdaptiveRungeKutta clone() {
+        return new AdaptiveRungeKutta(this.func, super.stages, this.order, super.weights, this.lweights, super.nodes, super.coefficients);
     }
 
     public double getMaxstep() {

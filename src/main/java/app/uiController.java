@@ -281,7 +281,7 @@ public class uiController {
         StringConverter<Double> converter = new StringConverter<>() {
             @Override
             public Double fromString(String s) {
-                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s) || Double.valueOf(s) <= 0 || Double.valueOf(s) >= 100) return 10.0 ;
+                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s) || Double.valueOf(s) < 1 || Double.valueOf(s) > 100) return 10.0 ;
                 else return Double.valueOf(s);
             }
             @Override
@@ -302,11 +302,17 @@ public class uiController {
 
         radiusval.getTextFormatter().valueProperty().addListener(e -> {
             System.out.println("okcan");
-            if (mode && this.selected != null) editCharge.editRadius(this.selected, Double.parseDouble(radiusval.getText()));
+            if (mode && this.selected != null) {
+                editCharge.editRadius(this.selected, Double.parseDouble(radiusval.getText()));
+                compute(); display();
+            }
         });
         chargeval.getValueFactory().valueProperty().addListener(e -> {
             System.out.println("okno");
-            if (mode && this.selected != null) editCharge.editCharge(this.selected, chargeval.getValue());
+            if (mode && this.selected != null) {
+                editCharge.editCharge(this.selected, chargeval.getValue());
+                compute(); display();
+            }
         });
     }
 
