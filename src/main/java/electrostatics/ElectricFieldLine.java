@@ -20,7 +20,7 @@ public class ElectricFieldLine extends FieldLine {
 
     private static int num_steps = 10000;
 
-    private Function<Vector2D, Boolean> func;
+    private Function<Vector2D, Double> func;
     private int numsteps;
     private double[] step;
 
@@ -33,11 +33,11 @@ public class ElectricFieldLine extends FieldLine {
 
     private Particle charge;
 
-    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Boolean> func, CompletableFuture<Void> future, int linenum) {
+    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Double> func, CompletableFuture<Void> future, int linenum) {
         this(charge, start, solver, func, future, linenum, num_steps, rough_precision_adaptive, rough_step_adaptive);
     }
 
-    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Boolean> func, CompletableFuture<Void> future, int linenum, int numsteps, double precision, double maxstep) {
+    public ElectricFieldLine(Particle charge, Vector2D start, RungeKutta solver, Function<Vector2D, Double> func, CompletableFuture<Void> future, int linenum, int numsteps, double precision, double maxstep) {
         super(start, solver, future);
         this.func = func;
         this.numsteps = numsteps;
@@ -56,10 +56,13 @@ public class ElectricFieldLine extends FieldLine {
         double dist = 0;
         double t = 0;
 
+        double d;
+
         double[] nextstep = new double[]{this.step[0]};
 
         for (int i = 0; i < this.numsteps; ++i) {
-            dist = start.sub(point).magnitude() * unit;
+            d = this.func.apply(point);
+            dist = Math.abs(d) * unit;
 
             if (solver instanceof AdaptiveRungeKutta) {
                 this.precision = (dist < fine_compute_distance) ? fine_precision_adaptive : rough_precision_adaptive;
@@ -71,10 +74,7 @@ public class ElectricFieldLine extends FieldLine {
             add(point);
             //System.out.println(point);
 
-            if (this.func.apply(point)) {
-                end = point.clone();
-                break;
-            }
+            if (d <= 0) { end = point.clone();break; }
 
             t += step[0];
             if (solver instanceof AdaptiveRungeKutta) step[0] = nextstep[0];

@@ -9,10 +9,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Function;
 
 public class ElectricField extends Field {
-    private Function<Vector2D, Boolean> func;
+    private Function<Vector2D, Double> func;
     private int linedensity;
 
-    public ElectricField(ThreadPoolExecutor threadpool, ArrayList<Particle> charges, RungeKutta solver, Function<Vector2D, Boolean> func, int linedensity) {
+    public ElectricField(ThreadPoolExecutor threadpool, ArrayList<Particle> charges, RungeKutta solver, Function<Vector2D, Double> func, int linedensity) {
         super(threadpool, charges, solver);
         this.linedensity = linedensity;
         this.func = func;

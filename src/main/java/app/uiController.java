@@ -307,11 +307,12 @@ public class uiController {
 
     public void display() {
         this.updating = true;
-        for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
-        for (Field p : this.fieldlines) canvas.getChildren().remove(p);
+        synchronized (canvas.getChildren()) {
+            for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
+            for (Field p : this.fieldlines) canvas.getChildren().remove(p);
 
-        this.potentiallines = new ArrayList<>();
-        this.fieldlines = new ArrayList<>();
+            this.potentiallines = new ArrayList<>();
+            this.fieldlines = new ArrayList<>();
 
         /*for (PotentialFieldLine pfl : App.model.getPotentialLines()) {
             Potential p = new Potential(pfl);
@@ -320,12 +321,13 @@ public class uiController {
             potentiallines.add(p);
         }*/
 
-        for (ElectricFieldLine efl : App.model.getFieldLines()) {
-            Field f = new Field(efl);
-            canvas.getChildren().add(f);
-            f.draw();
-            fieldlines.add(f);
+            for (ElectricFieldLine efl : App.model.getFieldLines()) {
+                Field f = new Field(efl);
+                canvas.getChildren().add(f);
+                f.draw();
+                fieldlines.add(f);
+            }
+            this.updating = false;
         }
-        this.updating = false;
     }
 }

@@ -63,11 +63,15 @@ public class SystemModel {
         return false;
     }
 
-    public boolean checkCollision(Vector2D pos) {
+    public double checkCollision(Vector2D pos) {
+        double mindist = Double.MAX_VALUE;
+        double dist;
         for (Particle p : this.charges) {
-            if (p.getPosition().sub(pos).magnitude() <= (p.getRadius() + 2)) return true;
+            dist = p.getPosition().sub(pos).magnitude();
+            mindist = Math.min(mindist, dist);
+            if (dist <= (p.getRadius()) && Math.signum(mindist) > 0) mindist = -mindist;
         }
-        return false;
+        return mindist;
     }
 
     public boolean moveParticle(Particle p, Vector2D end) {
