@@ -154,6 +154,8 @@ public class SystemModel {
         this.charges.add(p.clone());
     }
 
+    public void removeCharge(Particle p) { this.charges.remove(findID(p)); }
+
     public Particle findID(Particle charge) {
         for (Particle p : this.charges) if (p.getId() == charge.getId()) return p;
         return null;

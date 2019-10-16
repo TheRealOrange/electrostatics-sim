@@ -21,6 +21,7 @@ import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -38,7 +39,6 @@ public class uiController {
     private double scaling;
     private AnimationTimer timer;
 
-    private boolean ismoving;
     private boolean updating;
 
     private boolean render;
@@ -141,11 +141,13 @@ public class uiController {
 
     @FXML
     void addCharge(MouseEvent event) {
-        if (!ismoving && !updating) {
+        if (Movable.getCurrentObject()== null && !updating) {
             Particle p = new Particle(chargeval.getValue(), Double.parseDouble(radiusval.getText()), new Vector2D(0, 0));
             App.model.addCharge(p);
-            Charge charge = new Charge(p, this::compute, this::display);
+            Charge charge = new Charge(p, this::compute, this::display, this::dispose);
             canvas.getChildren().add(charge);
+            charge.getOnMouseClicked().handle(null);
+            System.out.println("ok");
         }
     }
 
@@ -267,14 +269,12 @@ public class uiController {
         TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 10.0, filter);
         radiusval.setTextFormatter(textFormatter);
 
-        ismoving = false;
-
         this.potentiallines = new ArrayList<>();
         this.fieldlines = new ArrayList<>();
         this.updating = false;
         this.render = true;
 
-        Movable.init(canvas);
+        Movable.init(canvas, new Node[]{menu, generalmenu, viewmenu, settingsmenu});
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
@@ -293,6 +293,14 @@ public class uiController {
             case 11: return new AdaptiveRungeKutta.DormandPrince(func);
         }
         return null;
+    }
+
+    public void dispose(Charge c) {
+        Vector2D pos = c.getPos();
+        if (menu.intersects(pos.getX(), pos.getY(), 1, 1)) {
+            App.model.removeCharge(c.getCharge());
+            canvas.getChildren().remove(c);
+        }
     }
 
     public void compute() {

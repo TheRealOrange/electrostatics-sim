@@ -19,7 +19,6 @@ public class Field extends Polyline implements CanvasNode {
     public void draw() {
         synchronized (super.getPoints()) {
             super.getPoints().clear();
-            System.out.println("drawing");
             points = new ArrayList<>();
             double x = efl.getPoints().get(0).getX()-10; double y = efl.getPoints().get(0).getY()-10;
             for (Vector2D pt : efl.getPoints()) {

@@ -7,6 +7,8 @@ import electrostatics.Particle;
 import javafx.scene.shape.Circle;
 import math.Vector2D;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class Charge extends Circle implements CanvasNode {
@@ -16,19 +18,22 @@ public class Charge extends Circle implements CanvasNode {
     private Runnable compute;
     private Runnable display;
 
-    public Charge(Particle charge, Runnable compute, Runnable display) {
+    private Consumer<Charge> checkbounds;
+
+    public Charge(Particle charge, Runnable compute, Runnable display, Consumer<Charge> checkbounds) {
         super();
         this.charge = charge;
+        this.checkbounds = checkbounds;
         super.setRadius(charge.getRadius());
-        movable = new Movable(this, this::getCoords, this::setCoords);
-        movable.setCoords(this.charge.getPosition());
+        movable = new Movable(this, this::getCoords, this::setCoords, this::checkbounds);
+        movable.setCoords(this.charge.getPosition()); super.toBack();
 
         this.compute = compute;
         this.display = display;
     }
 
     public Charge(Particle charge) {
-        this(charge, null, null);
+        this(charge, null, null, null);
     }
 
     public Particle getCharge() {
@@ -57,6 +62,12 @@ public class Charge extends Circle implements CanvasNode {
             this.compute.run();
             this.display.run();
         }
+    }
+
+    public void checkbounds() {
+        if (this.checkbounds != null) this.checkbounds.accept(this);
+        this.compute.run();
+        this.display.run();
     }
 
     @Override
