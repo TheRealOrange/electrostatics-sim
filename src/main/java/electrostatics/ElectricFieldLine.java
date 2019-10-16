@@ -20,6 +20,8 @@ public class ElectricFieldLine extends FieldLine {
 
     private static int num_steps = 10000;
 
+    public static final double EPSILON = Double.longBitsToDouble(971l << 52);
+
     private Function<Vector2D, Double> func;
     private int numsteps;
     private double[] step;
@@ -56,12 +58,12 @@ public class ElectricFieldLine extends FieldLine {
         double dist = 0;
         double t = 0;
 
-        double d;
+        double d = this.func.apply(point);
+        dist = Math.abs(d) * unit;
 
         double[] nextstep = new double[]{this.step[0]};
 
         for (int i = 0; i < this.numsteps; ++i) {
-            d = this.func.apply(point);
             dist = Math.abs(d) * unit;
 
             if (solver instanceof AdaptiveRungeKutta) {
@@ -71,10 +73,10 @@ public class ElectricFieldLine extends FieldLine {
             } else this.step[0] = (dist < fine_compute_distance) ? fine_step : rough_step;
 
             point = solver.step(point, t, step, nextstep, precision);
-            add(point);
             //System.out.println(point);
-
+            d = this.func.apply(point);
             if (d <= 0) { end = point.clone(); break; }
+            add(point);
 
             t += step[0];
             if (solver instanceof AdaptiveRungeKutta) step[0] = nextstep[0];

@@ -8,7 +8,7 @@ public class AdaptiveRungeKutta extends RungeKutta {
     private int order;
     private double[] lweights;
 
-    public AdaptiveRungeKutta(BiFunction<Double, Vector2D, Vector2D> func, int stages, int order, double[] weights, double[] lweights, double[] nodes, double[][] coefficients, double maxstep, double minstep) {
+    public AdaptiveRungeKutta(BiFunction<Double, Vector2D, Vector2D> func, int stages, int order, double[] weights, double[] lweights, double[] nodes, double[][] coefficients, double minstep, double maxstep) {
         super(func, stages, weights, nodes, coefficients);
         this.maxstep = maxstep;
         this.minstep = minstep;
@@ -24,11 +24,11 @@ public class AdaptiveRungeKutta extends RungeKutta {
     @Override
     public Vector2D step(Vector2D curr, double t, double[] h, double[] next_h, double tolerance) {
         for (int i = 0;; ++i) {
-            Vector2D highsum = new Vector2D(0, 0);
-            Vector2D lowsum = new Vector2D(0,0);
+            Vector2D highsum = new Vector2D();
+            Vector2D lowsum = new Vector2D();
 
             for (int j = 0;j < super.stages;++j) {
-                Vector2D sum = new Vector2D(0, 0);
+                Vector2D sum = new Vector2D();
                 for (int k = 0;k < j; ++k) sum = sum.add(super.k[k].mul(super.coefficients[j - 1][k]));
 
                 super.k[j] = super.func.apply(t + h[0] * super.nodes[j], curr.add(sum.mul(h[0])));
@@ -43,7 +43,7 @@ public class AdaptiveRungeKutta extends RungeKutta {
                 Vector2D result = curr.add(highsum.mul(h[0]));
 
                 if (error <= Double.MIN_VALUE) next_h[0] = 2*h[0];
-                else if (error < tolerance) next_h[0] = h[0] * 0.9 * Math.pow(tolerance/error, 1/(this.order+1));
+                else if (error < tolerance) next_h[0] = h[0] * 0.9 * Math.pow(tolerance/error, 1/(double)(this.order+1));
                 else next_h[0] = h[0];
 
                 if (Math.abs(next_h[0]) < minstep) next_h[0] = minstep*Math.signum(next_h[0]);
@@ -52,7 +52,7 @@ public class AdaptiveRungeKutta extends RungeKutta {
                 return result;
             }
 
-            h[0] *= 0.9 * Math.pow(tolerance/error, 1/this.order);
+            h[0] *= 0.9 * Math.pow(tolerance/error, 1/(double)this.order);
         }
     }
 

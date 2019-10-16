@@ -22,7 +22,7 @@ public class ElectricField extends Field {
     public CompletableFuture<Void> compute() {
         ArrayList<CompletableFuture<Void>> futures = new ArrayList<>();
         for (Particle p : super.charges) {
-            System.out.printf("particle x: %f y: %f\n", p.getPosition().getX(), p.getPosition().getY());
+            //System.out.printf("particle x: %f y: %f\n", p.getPosition().getX(), p.getPosition().getY());
             if (p.getCharge() > 0) {
                 int lines = (int) (linedensity * p.getCharge());
                 double[][] points = new double[lines][2];
@@ -31,7 +31,7 @@ public class ElectricField extends Field {
                     futures.add(f);
                     points[i][0] = (p.getRadius() + 1) * Math.sin((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getX();
                     points[i][1] = (p.getRadius() + 1) * Math.cos((2.0 / (double) lines) * i * Math.PI) + p.getPosition().getY();
-                    System.out.printf("circle pts %f %f\n", points[i][0], points[i][1]);
+                    //System.out.printf("circle pts %f %f\n", points[i][0], points[i][1]);
                     super.lines.add(new ElectricFieldLine(p.clone(), new Vector2D(points[i][0], points[i][1]), (super.solver instanceof AdaptiveRungeKutta)?((AdaptiveRungeKutta) super.solver).clone():super.solver.clone(), func, f, i));
                 }
             }

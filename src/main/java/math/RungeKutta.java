@@ -34,10 +34,10 @@ public class RungeKutta {
     }
 
     public Vector2D step(Vector2D curr, double t, double h) {
-        Vector2D sum = new Vector2D(0,0);
+        Vector2D sum = new Vector2D();
 
         for (int i = 0;i < this.stages; ++i) {
-            Vector2D n = new Vector2D(0,0);
+            Vector2D n = new Vector2D();
             for (int j = 0; j < i; ++j) n = n.add(k[j].mul(coefficients[i-1][j]));
 
             k[i] = this.func.apply(t + nodes[i] * h, curr.add(n.mul(h)));
@@ -53,6 +53,10 @@ public class RungeKutta {
 
     public RungeKutta clone() {
         return new RungeKutta(func, stages, weights, nodes, coefficients);
+    }
+
+    public BiFunction<Double, Vector2D, Vector2D> getFunc() {
+        return func;
     }
 
     static final double[] eulerWeights = new double[]{1};

@@ -34,7 +34,7 @@ public class SystemModel {
     }
 
     public SystemModel() {
-        this(new ArrayList<Particle>(), new Vector2D(0, 0), null, null);
+        this(new ArrayList<Particle>(), new Vector2D(), null, null);
     }
 
     public void compute() throws InterruptedException, ExecutionException {
@@ -66,12 +66,18 @@ public class SystemModel {
     public double checkCollision(Vector2D pos) {
         double mindist = Double.MAX_VALUE;
         double dist;
+        double dLen;
+        boolean collision = false;
         for (Particle p : this.charges) {
             dist = p.getPosition().sub(pos).magnitude();
             mindist = Math.min(mindist, dist);
-            if (dist <= (p.getRadius()) && Math.signum(mindist) > 0) mindist = -mindist;
+            if (dist <= (p.getRadius()))
+                collision = true;
+            else {
+                dLen =
+            }
         }
-        return mindist;
+        return (collision)?-mindist:mindist;
     }
 
     public boolean moveParticle(Particle p, Vector2D end) {

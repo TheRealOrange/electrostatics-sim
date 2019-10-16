@@ -4,12 +4,15 @@ import app.App;
 import canvas.CanvasNode;
 import canvas.Movable;
 import electrostatics.Particle;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import math.Vector2D;
 
 import java.util.function.Function;
 
 public class Charge extends Circle implements CanvasNode {
+    private static final Paint[] colors = new Paint[]{Color.rgb(255, 128, 128), Color.rgb(112, 112, 255), Color.rgb(122, 122, 122)};
     private Particle charge;
     private final Movable movable;
 
@@ -32,6 +35,14 @@ public class Charge extends Circle implements CanvasNode {
 
         this.compute = compute;
         this.display = display;
+
+        updateColor();
+    }
+
+    void updateColor() {
+        if (this.charge.getCharge() > 0.5) super.setFill(colors[0]);
+        else if (this.charge.getCharge() < -0.5) super.setFill(colors[1]);
+        else super.setFill(colors[2]);
     }
 
     public Charge(Particle charge) {
@@ -51,6 +62,7 @@ public class Charge extends Circle implements CanvasNode {
     public void setCharge(double c) {
         this.charge.setCharge(c);
         App.model.findID(this.charge).setCharge(c);
+        updateColor();
     }
 
     public Vector2D getPos() {
