@@ -8,11 +8,11 @@ import math.Vector2D;
 import java.util.ArrayList;
 
 public class LineAnimation extends AnimationTimer {
-    Polyline p = new Polyline();
-    int i = 0;
-    int step;
-    int max;
-    ArrayList<Vector2D> points;
+    private Polyline p = new Polyline();
+    private int i = 0;
+    private int step;
+    private int max;
+    private ArrayList<Vector2D> points;
     private Callback<LineAnimation, Void> onComplete;
 
     public LineAnimation(ArrayList<Vector2D> points, int step, int max, Callback<LineAnimation, Void> onComplete) {

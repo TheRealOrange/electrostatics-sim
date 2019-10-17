@@ -8,7 +8,7 @@ public class RungeKutta implements Cloneable {
     double[] weights;
     double[] nodes;
     double[][] coefficients;
-    Vector2D k[];
+    Vector2D[] k;
 
     public RungeKutta(BiFunction<Double, Vector2D, Vector2D> func, int stages, double[] weights, double[] nodes, double[][] coefficients) {
         this.func = func;
@@ -24,7 +24,7 @@ public class RungeKutta implements Cloneable {
 				int coeffcientnum = i - 1;
                 this.coefficients[coeffcientnum] = new double[i];
 
-                for (int j = 0;j < i;++j) this.coefficients[coeffcientnum][j] = coefficients[coeffcientnum][j];
+                System.arraycopy(coefficients[coeffcientnum], 0, this.coefficients[coeffcientnum], 0, i);
             }
         }
         this.weights = weights;

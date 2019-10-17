@@ -40,7 +40,7 @@ public class Charge extends Circle implements CanvasNode {
         super.getStyleClass().add("charge");
     }
 
-    void updateColor() {
+    private void updateColor() {
         if (this.charge.getCharge() > 0.5) super.setFill(colors[0]);
         else if (this.charge.getCharge() < -0.5) super.setFill(colors[1]);
         else super.setFill(colors[2]);
@@ -70,11 +70,11 @@ public class Charge extends Circle implements CanvasNode {
         return new Vector2D(super.getCenterX(), super.getCenterY());
     }
 
-    public Vector2D getCoords() {
+    private Vector2D getCoords() {
         return charge.getPosition();
     }
 
-    public void setCoords(Vector2D pos) {
+    private void setCoords(Vector2D pos) {
         super.setCenterX(pos.getX());
         super.setCenterY(pos.getY());
         App.model.moveParticle(charge, pos);
@@ -86,12 +86,12 @@ public class Charge extends Circle implements CanvasNode {
         }
     }
 
-    public boolean select() {
+    private boolean select() {
         if (this.select != null) return this.select.apply(this);
         return false;
     }
 
-    public void eventHandler(Movable obj) {
+    private void eventHandler(Movable obj) {
         if (!select()) {
             if (Movable.getCurrentObject() == obj) {
                 Movable.setCurrentObject(null);

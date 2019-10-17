@@ -25,10 +25,10 @@ import java.util.concurrent.ExecutionException;
 
 public class splashController {
     SystemModel model;
-    Random r = new Random();
-    long prevTime;
-    Boolean load = true;
-    String[] loadingme = { "obliterating enemies...", "git push --force", "solving navier-stokes...", "proving riemann hypothesis...", "loading...", "eating cookies...", "catching up on sleep...", "burden bear...", "inventing baryons...", "fixing quantum gravity...", "simulating universe...", "failing cs...", "splitting the atom...", "growing potatoes for space colonization...", "making paperclips..." };
+    private Random r = new Random();
+    private long prevTime;
+    private Boolean load = true;
+    private String[] loadingme = { "obliterating enemies...", "git push --force", "solving navier-stokes...", "proving riemann hypothesis...", "loading...", "eating cookies...", "catching up on sleep...", "burden bear...", "inventing baryons...", "fixing quantum gravity...", "simulating universe...", "failing cs...", "splitting the atom...", "growing potatoes for space colonization...", "making paperclips..." };
 
     @FXML
     private ResourceBundle resources;
@@ -71,7 +71,7 @@ public class splashController {
         display();
     }
 
-    void loadGUI() {
+    private void loadGUI() {
         load = false;
         try {
             App.loading = true;
@@ -90,7 +90,7 @@ public class splashController {
         App.primarystage.setResizable(true);
     }
 
-    void compute() {
+    private void compute() {
         try {
             model.compute();
         } catch (InterruptedException | ExecutionException e) {
@@ -98,7 +98,7 @@ public class splashController {
         }
     }
 
-    void updateLoadingMessage() {
+    private void updateLoadingMessage() {
         long time = System.currentTimeMillis();
         if (time - prevTime > 1200) {
             loading.setText(loadingme[r.nextInt(loadingme.length)]);
@@ -106,7 +106,7 @@ public class splashController {
         }
     }
 
-    void display() {
+    private void display() {
         ArrayList<AnimationTimer> animate = new ArrayList<>();
         final int[] total = {model.getPotentialLines().size() + model.getFieldLines().size() - 2};
         final int[] num = {0};

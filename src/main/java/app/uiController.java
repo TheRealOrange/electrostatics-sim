@@ -225,9 +225,7 @@ public class uiController {
                 compute();
                 display();
                 render = tmp;
-            } catch(IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch(IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -315,7 +313,7 @@ public class uiController {
         assert language != null : "fx:id=\"language\" was not injected: check your FXML file 'gui.fxml'.";
         if (!Temp.reload) App.model = new SystemModel();
 
-        String methods[] = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
+        String[] methods = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
 
         efieldsolver.setItems(FXCollections.observableArrayList(methods));
         efieldsolver.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
@@ -340,15 +338,11 @@ public class uiController {
 
         SpinnerValueFactory factory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1, 1);
         efieldlineweight.setValueFactory(factory2);
-        efieldlineweight.getValueFactory().valueProperty().addListener(e->{
-            Field.setLineWeight(efieldlineweight.getValue());
-        });
+        efieldlineweight.getValueFactory().valueProperty().addListener(e-> Field.setLineWeight(efieldlineweight.getValue()));
 
         SpinnerValueFactory factory3 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1, 1);
         ufieldlineweight.setValueFactory(factory3);
-        ufieldlineweight.getValueFactory().valueProperty().addListener(e->{
-            Potential.setLineWeight(ufieldlineweight.getValue());
-        });
+        ufieldlineweight.getValueFactory().valueProperty().addListener(e-> Potential.setLineWeight(ufieldlineweight.getValue()));
 
         SpinnerValueFactory factory4 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 8, 1, 1);
         efieldlinedensity.setValueFactory(factory4);
@@ -394,7 +388,7 @@ public class uiController {
         language.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 1 && !App.loading) {
                 System.out.println(lang[new_value.intValue()] + " selected");
-                Locale locale = new Locale("en", "US");;
+                Locale locale = new Locale("en", "US");
                 switch (new_value.intValue()) {
                     case 0: locale = new Locale("en", "US"); break;
                     case 1: locale = new Locale("zh", "CN"); break;
@@ -506,11 +500,11 @@ public class uiController {
         App.settheme = this::selectTheme;
     }
 
-    public void selectTheme(int v) {
+    private void selectTheme(int v) {
         disptheme.getSelectionModel().select(v);
     }
 
-    void loadChargesFromSystem() {
+    private void loadChargesFromSystem() {
         this.charges = new ArrayList<>();
         for (Particle p : App.model.getCharges()) {
             Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
@@ -519,7 +513,7 @@ public class uiController {
         }
     }
 
-    RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
+    private RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
         switch (solver) {
             case 0: return new RungeKutta.Euler(func);
             case 1: return new RungeKutta.Midpoint(func);
@@ -537,7 +531,7 @@ public class uiController {
         return null;
     }
 
-    public boolean dispose(Charge c) {
+    private boolean dispose(Charge c) {
         Vector2D pos = c.getPos();
         if (menu.intersects(pos.getX(), pos.getY(), 1, 1)) {
             App.model.removeCharge(c.getCharge());
@@ -547,7 +541,7 @@ public class uiController {
         return true;
     }
 
-    public boolean select(Charge c) {
+    private boolean select(Charge c) {
         if (this.mode) {
             this.selected = c;
             radiusval.setText(String.format("%.1f", c.getCharge().getRadius()));
@@ -558,7 +552,7 @@ public class uiController {
         return false;
     }
 
-    void compute() {
+    private void compute() {
         if (render) {
             this.updating = true;
             try {
@@ -570,7 +564,7 @@ public class uiController {
         }
     }
 
-    void display() {
+    private void display() {
         this.updating = true;
         synchronized (canvas.getChildren()) {
             for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
@@ -599,7 +593,7 @@ public class uiController {
         }
     }
 
-    void reload() {
+    private void reload() {
         App.loading = true;
         Temp.reload = true;
 

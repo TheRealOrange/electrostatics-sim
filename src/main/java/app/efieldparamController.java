@@ -165,7 +165,7 @@ public class efieldparamController {
         updateFields();
     }
 
-    void updateFields() {
+    private void updateFields() {
         ElectricFieldLine.setFine_compute_distance((int)resolutionthreshold_slider.getValue());
         ElectricFieldLine.setNum_steps((int)stepcount_slider.getValue());
 

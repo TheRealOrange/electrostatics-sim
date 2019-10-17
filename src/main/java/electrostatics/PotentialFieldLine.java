@@ -35,7 +35,7 @@ public class PotentialFieldLine extends FieldLine implements Comparable<Potentia
     public void run() {
         Vector2D point = this.start;
         Vector2D mean = new Vector2D();
-        double dist = 0;
+        double dist;
         double t = 0;
 
         double[] nextstep = new double[]{this.step[0]};

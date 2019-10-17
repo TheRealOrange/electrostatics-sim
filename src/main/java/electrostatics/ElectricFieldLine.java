@@ -57,11 +57,10 @@ public class ElectricFieldLine extends FieldLine implements Cloneable {
         Vector2D prev = point.clone();
         add(point);
 
-        double dist = 0;
+        double dist;
         double t = 0;
 
         double d = this.func.apply(prev, point);
-        dist = Math.abs(d) * unit;
 
         double[] nextstep = new double[]{this.step[0]};
 

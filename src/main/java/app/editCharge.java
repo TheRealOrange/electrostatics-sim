@@ -2,7 +2,7 @@ package app;
 
 import elements.Charge;
 
-public abstract class editCharge {
+abstract class editCharge {
     public static void editCharge(Charge c, double charge) {
         c.setCharge(charge);
     }

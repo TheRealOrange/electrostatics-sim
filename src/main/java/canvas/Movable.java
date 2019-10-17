@@ -42,9 +42,7 @@ public class Movable {
     this.getcoords = getcoords;
     this.setcoords = setcoords;
 
-    shape.setOnMouseClicked(e -> {
-      this.eventHandler.accept(this);
-    });
+    shape.setOnMouseClicked(e -> this.eventHandler.accept(this));
     objects.add(this);
   }
 
