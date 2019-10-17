@@ -491,9 +491,7 @@ public class uiController {
                 canvas.getChildren().add(c);
             }
 
-            System.out.println("ok");
             settingsmenu.setExpanded(true);
-            System.out.println(settingsmenu.isExpanded());
             App.loading = false;
         }
     }
@@ -527,7 +525,6 @@ public class uiController {
     }
 
     public boolean select(Charge c) {
-        System.out.println(mode);
         if (this.mode) {
             this.selected = c;
             radiusval.setText(String.format("%.1f", c.getCharge().getRadius()));
