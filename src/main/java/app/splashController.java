@@ -3,10 +3,9 @@ package app;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 
 import electrostatics.ElectricFieldLine;
 import electrostatics.Particle;
@@ -20,14 +19,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polyline;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 import math.RungeKutta;
 import math.Vector2D;
 
 public class splashController {
     SystemModel model;
+    Random r = new Random();
+    long prevTime;
+    Boolean load = true;
+    String[] loadingme = { "obliterating enemies...", "git push --force", "solving navier-stokes...", "proving riemann hypothesis...", "loading...", "eating cookies...", "catching up on sleep...", "burden bear...", "inventing baryons...", "fixing quantum gravity...", "simulating universe...", "failing cs...", "splitting the atom...", "growing potatoes for space colonization...", "making paperclips..." };
 
     @FXML
     private ResourceBundle resources;
@@ -68,10 +69,10 @@ public class splashController {
 
         compute();
         display();
-
     }
 
     void loadGUI() {
+        load = false;
         try {
             App.loading = true;
             App.controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml"), App.rb));
@@ -96,13 +97,29 @@ public class splashController {
         }
     }
 
+    void updateLoadingMessage() {
+        long time = System.currentTimeMillis();
+        if (time - prevTime > 1200) {
+            loading.setText(loadingme[r.nextInt(loadingme.length)]);
+            prevTime = time;
+        }
+    }
+
     void display() {
         ArrayList<AnimationTimer> animate = new ArrayList<>();
-        final int[] total = {model.getPotentialLines().size() + model.getFieldLines().size() - 1};
+        final int[] total = {model.getPotentialLines().size() + model.getFieldLines().size() - 2};
         final int[] num = {0};
 
+        animate.add(new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                updateLoadingMessage();
+                if (num[0] == total[0]) this.stop();
+            }
+        });
+
         for (PotentialFieldLine pfl : model.getPotentialLines()) {
-            LineAnimation l = new LineAnimation(pfl.getPoints(), 80, e -> {
+            LineAnimation l = new LineAnimation(pfl.getPoints(), 50, pfl.getPoints().size(), e -> {
                 synchronized (num) {
                     ++num[0];
                     if (num[0] == total[0]) loadGUI();
@@ -116,7 +133,7 @@ public class splashController {
         }
 
         for (ElectricFieldLine efl : model.getFieldLines()) {
-            LineAnimation l = new LineAnimation(efl.getPoints(), 80, e -> {
+            LineAnimation l = new LineAnimation(efl.getPoints(), 10, efl.getPoints().size()/3, e -> {
                 synchronized (num) {
                     ++num[0];
                     if (num[0] == total[0]) loadGUI();

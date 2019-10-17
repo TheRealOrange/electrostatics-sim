@@ -112,7 +112,7 @@ public class Charge extends Circle implements CanvasNode {
         Vector2D pos = movable.getCoords().sub(prevOffset).add(offset);
         super.setCenterX(pos.getX());
         super.setCenterY(pos.getY());
-        App.model.moveParticle(charge, pos);
+        App.model.moveParticle(App.model.findID(charge), pos);
         this.charge.setPosition(pos);
     }
 }

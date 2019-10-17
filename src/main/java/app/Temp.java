@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public abstract class Temp {
     public static boolean reload = false;
 
-    public static ArrayList<Charge> charges;
     public static ArrayList<Field> fieldlines;
     public static ArrayList<Potential> potentiallines;
     public static Charge selected;

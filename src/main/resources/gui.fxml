@@ -26,7 +26,7 @@
                         <Button fx:id="forcerender" layoutX="56.599999999999994" layoutY="344.8" mnemonicParsing="false" onMouseClicked="#forceRender" text="%render" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="355.0" />
                         <Button fx:id="savefile" layoutX="56.599999999999994" layoutY="409.8" mnemonicParsing="false" onMouseClicked="#saveFile" text="%savefile" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="430.0" />
                         <Button fx:id="loadfile" layoutX="56.599999999999994" layoutY="444.8" mnemonicParsing="false" onMouseClicked="#loadFile" text="%loadfile" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="465.0" />
-                        <Label layoutX="33.0" layoutY="30.0" text="Charge" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
+                        <Label layoutX="33.0" layoutY="30.0" text="%charge" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
                         <Button fx:id="addcharge" layoutX="28.0" layoutY="123.0" mnemonicParsing="false" onMouseClicked="#addCharge" text="%addcharge" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0" />
                         <Spinner fx:id="chargeval" layoutX="25.0" layoutY="41.0" prefHeight="27.0" prefWidth="138.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="85.0" AnchorPane.topAnchor="30.0" />
                         <Label layoutX="152.0" layoutY="46.0" text="x 10e-19 C" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0" />

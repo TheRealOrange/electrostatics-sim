@@ -35,6 +35,9 @@ public class App extends Application {
 
         controller.activate("splash");
 
+        primaryStage.setMinHeight(457);
+        primaryStage.setMinHeight(324);
+
         primaryStage.setResizable(false);
         primarystage = primaryStage;
 

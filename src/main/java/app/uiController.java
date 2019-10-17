@@ -219,12 +219,8 @@ public class uiController {
 
                 for (Charge c : this.charges){
                     canvas.getChildren().remove(c);
-                } this.charges = new ArrayList<>();
-                for (Particle p : App.model.getCharges()) {
-                    Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
-                    canvas.getChildren().add(charge);
-                    this.charges.add(charge);
                 }
+                loadChargesFromSystem();
                 boolean tmp = render;
                 render = true;
                 compute();
@@ -465,9 +461,8 @@ public class uiController {
         efieldsolver.getSelectionModel().select(5);
 
         if (Temp.reload) {
-            this.charges = Temp.charges;
-            this.fieldlines = Temp.fieldlines;
-            this.potentiallines = Temp.potentiallines;
+            this.fieldlines = new ArrayList<>();
+            this.potentiallines = new ArrayList<>();
             this.selected = Temp.selected;
             this.updating = Temp.updating;
             this.render = Temp.render;
@@ -480,19 +475,40 @@ public class uiController {
             ufieldsolver.getSelectionModel().select(Temp.p_solver);
 
             efieldlinestyle.getSelectionModel().select(Temp.e_style);
+            Field.setLineStyle(stroke[Temp.p_style]); Field.setStyle_num(Temp.p_style);
             ufieldlinestyle.getSelectionModel().select(Temp.p_style);
+            Potential.setLineStyle(stroke[Temp.p_style]); Potential.setStyle_num(Temp.p_style);
 
             efieldlineweight.getValueFactory().setValue(Temp.e_weight);
+            Field.setLineWeight(Temp.e_weight);
             ufieldlineweight.getValueFactory().setValue(Temp.p_weight);
+            Potential.setLineWeight(Temp.p_weight);
+
+            efieldlinedensity.getValueFactory().setValue(App.model.getLinedensity());
+            uinterval.getValueFactory().setValue(App.model.getPotentialint());
 
             language.getSelectionModel().select(this.locale);
 
-            for (Charge c : this.charges) {
-                canvas.getChildren().add(c);
-            }
+            loadChargesFromSystem();
 
             settingsmenu.setExpanded(true);
             App.loading = false;
+            Temp.reload = false;
+
+            boolean tmp = this.render;
+            this.render = true;
+            compute();
+            display();
+            this.render = tmp;
+        }
+    }
+
+    void loadChargesFromSystem() {
+        this.charges = new ArrayList<>();
+        for (Particle p : App.model.getCharges()) {
+            Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
+            canvas.getChildren().add(charge);
+            this.charges.add(charge);
         }
     }
 
@@ -580,7 +596,6 @@ public class uiController {
         App.loading = true;
         Temp.reload = true;
 
-        Temp.charges = this.charges;
         Temp.fieldlines = this.fieldlines;
         Temp.potentiallines = this.potentiallines;
         Temp.selected = this.selected;
