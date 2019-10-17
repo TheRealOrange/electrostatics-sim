@@ -1,17 +1,12 @@
-.dark > *,
-.dark {
-    -fx-base: #303030;
+.charge {
+    -fx-stroke: #303030;
+    -fx-stroke-width: 1px;
 }
 
-Circle {
-    -fx-border-color: #202020;
-    -fx-border-width: 10px;
+.charge:hover {
+    -fx-stroke: #919191;
 }
 
-Circle:hover {
-    -fx-border-color: #919191;
-}
-
-Circle:focused {
-    -fx-border-color: #f0f0f0;
+.charge:focused {
+    -fx-stroke: #f0f0f0;
 }

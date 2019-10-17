@@ -1,21 +1,14 @@
 package app;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
-
-import electrostatics.ElectricField;
 import electrostatics.ElectricFieldLine;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.util.StringConverter;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class efieldparamController {
 

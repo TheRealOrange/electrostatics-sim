@@ -1,16 +1,7 @@
 package app;
 
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
-import java.util.function.BiFunction;
-
-import canvas.*;
+import canvas.InfiniteCanvas;
+import canvas.Movable;
 import electrostatics.ElectricFieldLine;
 import electrostatics.Particle;
 import electrostatics.PotentialFieldLine;
@@ -23,14 +14,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import math.AdaptiveRungeKutta;
 import math.RungeKutta;
 import math.Vector2D;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
 
 public class uiController {
     private ArrayList<Charge> charges;
@@ -412,16 +411,18 @@ public class uiController {
             if (new_value.intValue() >= 0 && new_value.intValue() <= 1) {
                 System.out.println(theme[new_value.intValue()] + " selected");
                 if (new_value.intValue() == 1) {
-                    App.controller.getScreen("gui").getStyleClass().add("dark");
-                    App.controller.getScreen("potential").getStyleClass().add("dark");
-                    App.controller.getScreen("field").getStyleClass().add("dark");
+                    App.controller.getScreen("gui").getStylesheets().add("dark.css");
+                    App.controller.getScreen("potential").getStylesheets().add("dark.css");
+                    App.controller.getScreen("field").getStylesheets().add("dark.css");
+                    Potential.setLineColor(Color.WHITE); Field.setLineColor(Color.WHITE);
                 } else {
-                    App.controller.getScreen("gui").getStyleClass().remove("dark");
-                    App.controller.getScreen("potential").getStyleClass().remove("dark");
-                    App.controller.getScreen("field").getStyleClass().remove("dark");
+                    App.controller.getScreen("gui").getStylesheets().remove("dark.css");
+                    App.controller.getScreen("potential").getStylesheets().remove("dark.css");
+                    App.controller.getScreen("field").getStylesheets().remove("dark.css");
+                    Potential.setLineColor(Color.BLACK); Field.setLineColor(Color.BLACK);
                 }
             }
-        }); //disptheme.getSelectionModel().select(1);
+        });
 
         TextFormatter<Double> textFormatter = utility.doubleFormatter(1, 100, 10);
         radiusval.setTextFormatter(textFormatter);
@@ -501,6 +502,12 @@ public class uiController {
             display();
             this.render = tmp;
         }
+
+        App.settheme = this::selectTheme;
+    }
+
+    public void selectTheme(int v) {
+        disptheme.getSelectionModel().select(v);
     }
 
     void loadChargesFromSystem() {

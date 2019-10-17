@@ -37,7 +37,7 @@ public class Field extends DrawLine {
     public static void setLineColor(Paint p) {
         Field.color = p;
         for (Field f : objs) {
-            f.setFill(p);
+            f.setStroke(p);
         }
     }
 

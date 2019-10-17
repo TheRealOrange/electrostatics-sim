@@ -1,7 +1,8 @@
 package math;
 
-import java.awt.*;
 import javafx.geometry.Point2D;
+
+import java.awt.*;
 import java.io.Serializable;
 
 public class Vector2D implements Cloneable, Serializable {

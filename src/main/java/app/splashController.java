@@ -1,12 +1,5 @@
 package app;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
-
 import electrostatics.ElectricFieldLine;
 import electrostatics.Particle;
 import electrostatics.PotentialFieldLine;
@@ -22,6 +15,13 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import math.RungeKutta;
 import math.Vector2D;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 public class splashController {
     SystemModel model;
@@ -78,6 +78,7 @@ public class splashController {
             App.controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml"), App.rb));
             App.controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml"), App.rb));
             App.controller.addScreen("potential", FXMLLoader.load(getClass().getResource("/potentialparams.fxml"), App.rb));
+            App.settheme.accept(0);
             App.loading = false;
         } catch (IOException e) {
             e.printStackTrace();

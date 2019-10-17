@@ -1,7 +1,6 @@
 package serialize;
 
 import java.io.*;
-import java.util.ArrayList;
 
 //functions that save the classes to a database file
 

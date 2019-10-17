@@ -11,6 +11,7 @@ import screens.ScreenController;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class App extends Application {
     public static SystemModel model;
@@ -20,6 +21,7 @@ public class App extends Application {
     public static Stage primarystage;
 
     public static boolean loading;
+    public static Consumer<Integer> settheme;
 
     @Override
     public void start(Stage primaryStage) throws Exception {

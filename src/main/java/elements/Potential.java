@@ -37,7 +37,7 @@ public class Potential extends DrawLine {
     public static void setLineColor(Paint p) {
         Potential.color = p;
         for (Potential f : objs) {
-            f.setFill(p);
+            f.setStroke(p);
         }
     }
 

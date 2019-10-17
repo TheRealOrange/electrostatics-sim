@@ -37,6 +37,7 @@ public class Charge extends Circle implements CanvasNode {
         this.display = display;
 
         updateColor();
+        super.getStyleClass().add("charge");
     }
 
     void updateColor() {
