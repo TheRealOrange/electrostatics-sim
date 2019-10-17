@@ -75,7 +75,7 @@ public class SystemModel {
         int i = 0;
 
         for (PotentialFieldLine pfl : plines) {
-            if (Math.abs(pfl.getPotential()-pt) >= potentialint) {
+            if (Math.abs(pfl.getPotential()-pt) > potentialint) {
                 equipotentials.add(new ArrayList<>()); duplicate.add(new ArrayList<>()); ++i;
                 pt = pfl.getPotential();
             }
@@ -87,8 +87,8 @@ public class SystemModel {
         for (int n = 0;n < equipotentials.size();++n) {
             apl = equipotentials.get(n);
             for (int j = 0;j < apl.size();++j) {
-                for (int k = j+1;k < apl.size()/* && duplicate.get(n).get(j)*/;++k) {
-                    if (apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() < 35 && apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude() < 10) {
+                for (int k = j+1;k < apl.size() && duplicate.get(n).get(j);++k) {
+                    if (apl.get(j).getStd().sub(apl.get(k).getStd()).magnitude() < 40 && apl.get(j).getWcenter().sub(apl.get(k).getWcenter()).magnitude() < 10) {
                         duplicate.get(n).set(k, false);
                     }
                 }

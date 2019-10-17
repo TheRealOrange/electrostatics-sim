@@ -2,7 +2,6 @@ package elements;
 
 import canvas.CanvasNode;
 import electrostatics.FieldLine;
-import electrostatics.PotentialFieldLine;
 import javafx.scene.shape.Polyline;
 import math.Vector2D;
 

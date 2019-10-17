@@ -15,25 +15,28 @@ import java.util.ResourceBundle;
 public class App extends Application {
     public static SystemModel model;
     public static ScreenController controller;
+    public static ResourceBundle rb;
+
+    public static Stage primarystage;
+
+    public static boolean loading;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(new AnchorPane());
 
         controller = new ScreenController(scene, getClass());
+        loading = false;
 
         Locale l = new Locale("en", "US");
-        ResourceBundle rb = ResourceBundle.getBundle("LanguageBundle", l);
+        rb = ResourceBundle.getBundle("LanguageBundle", l);
         System.out.println(rb);
-        controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml"), rb));
         controller.addScreen("splash", FXMLLoader.load(getClass().getResource("/splash.fxml"), rb));
-        controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml"), rb));
-        controller.addScreen("potential", FXMLLoader.load(getClass().getResource("/potentialparams.fxml"), rb));
 
-        controller.activate("gui");
+        controller.activate("splash");
 
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(800);
+        primaryStage.setResizable(false);
+        primarystage = primaryStage;
 
         primaryStage.setTitle("nonono");
         primaryStage.setScene(scene);

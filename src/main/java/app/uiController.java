@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
@@ -19,6 +20,7 @@ import elements.Field;
 import elements.Potential;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -43,6 +45,8 @@ public class uiController {
 
     private boolean drawfield;
     private boolean drawpotential;
+
+    private int locale;
 
     @FXML
     private ResourceBundle resources;
@@ -160,11 +164,11 @@ public class uiController {
     @FXML
     void toggleMode(MouseEvent event) {
         if (mode) {
-            togglemode.setText("%edit");
+            togglemode.setText(App.rb.getString("edit"));
             addcharge.setDisable(false);
         }
         else {
-            togglemode.setText("%move");
+            togglemode.setText(App.rb.getString("move"));
             addcharge.setDisable(true);
         }
         mode = !mode;
@@ -212,12 +216,14 @@ public class uiController {
                 efieldlinestyle.getSelectionModel().select(0);
                 efieldlinestyle.getSelectionModel().select(1);
                 efieldlinestyle.getSelectionModel().select(App.model.getConfig().getE_style());
+
                 for (Charge c : this.charges){
                     canvas.getChildren().remove(c);
                 } this.charges = new ArrayList<>();
                 for (Particle p : App.model.getCharges()) {
                     Charge charge = new Charge(p, this::compute, this::display, this::dispose, this::select);
                     canvas.getChildren().add(charge);
+                    this.charges.add(charge);
                 }
                 boolean tmp = render;
                 render = true;
@@ -251,11 +257,11 @@ public class uiController {
     @FXML
     void toggleRender(MouseEvent event) {
         if (render) {
-            togglerender.setText("%startrender");
+            togglerender.setText(App.rb.getString("startrender"));
             forcerender.setDisable(false);
         }
         else {
-            togglerender.setText("%stoprender");
+            togglerender.setText(App.rb.getString("stoprender"));
             forcerender.setDisable(true);
         }
         render = !render;
@@ -312,7 +318,7 @@ public class uiController {
         assert ufieldsolver != null : "fx:id=\"ufieldsolver\" was not injected: check your FXML file 'gui.fxml'.";
         assert ufieldparams != null : "fx:id=\"ufieldparams\" was not injected: check your FXML file 'gui.fxml'.";
         assert language != null : "fx:id=\"language\" was not injected: check your FXML file 'gui.fxml'.";
-        App.model = new SystemModel();
+        if (!Temp.reload) App.model = new SystemModel();
 
         String methods[] = {"Euler", "Midpoint", "Heun", "Ralston", "Ralston 4", "RK 4", "SSPRK 3", "RK 3/8", "Bogacki-Shampine", "FehlBerg", "Cash-Karp", "Dormand-Prince"};
 
@@ -386,6 +392,24 @@ public class uiController {
             }
         }); ufieldlinestyle.setButtonCell(ufieldlinestyle.getCellFactory().call(null));
 
+
+        String[] lang = {"English", "中文"};
+
+        language.setItems(FXCollections.observableArrayList(lang));
+        language.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
+            if (new_value.intValue() >= 0 && new_value.intValue() <= 1 && !App.loading) {
+                System.out.println(lang[new_value.intValue()] + " selected");
+                Locale locale = new Locale("en", "US");;
+                switch (new_value.intValue()) {
+                    case 0: locale = new Locale("en", "US"); break;
+                    case 1: locale = new Locale("zh", "CN"); break;
+                }
+                App.rb = ResourceBundle.getBundle("LanguageBundle", locale);
+                this.locale = new_value.intValue();
+                reload();
+            }
+        }); language.getSelectionModel().select(0);
+
         String[] theme = {"Light", "Dark"};
         disptheme.setItems(FXCollections.observableArrayList(theme));
         disptheme.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
@@ -439,6 +463,39 @@ public class uiController {
         ufieldsolver.getSelectionModel().select(5);
         efieldlinestyle.getSelectionModel().select(0);
         efieldsolver.getSelectionModel().select(5);
+
+        if (Temp.reload) {
+            this.charges = Temp.charges;
+            this.fieldlines = Temp.fieldlines;
+            this.potentiallines = Temp.potentiallines;
+            this.selected = Temp.selected;
+            this.updating = Temp.updating;
+            this.render = Temp.render;
+            this.drawfield = Temp.drawfield;
+            this.drawpotential = Temp.drawpotential;
+            this.mode = Temp.mode;
+            this.locale = Temp.locale;
+
+            efieldsolver.getSelectionModel().select(Temp.e_solver);
+            ufieldsolver.getSelectionModel().select(Temp.p_solver);
+
+            efieldlinestyle.getSelectionModel().select(Temp.e_style);
+            ufieldlinestyle.getSelectionModel().select(Temp.p_style);
+
+            efieldlineweight.getValueFactory().setValue(Temp.e_weight);
+            ufieldlineweight.getValueFactory().setValue(Temp.p_weight);
+
+            language.getSelectionModel().select(this.locale);
+
+            for (Charge c : this.charges) {
+                canvas.getChildren().add(c);
+            }
+
+            System.out.println("ok");
+            settingsmenu.setExpanded(true);
+            System.out.println(settingsmenu.isExpanded());
+            App.loading = false;
+        }
     }
 
     RungeKutta selectSolver(BiFunction<Double, Vector2D, Vector2D> func, int solver) {
@@ -481,7 +538,7 @@ public class uiController {
         return false;
     }
 
-    public void compute() {
+    void compute() {
         if (render) {
             this.updating = true;
             try {
@@ -493,7 +550,7 @@ public class uiController {
         }
     }
 
-    public void display() {
+    void display() {
         this.updating = true;
         synchronized (canvas.getChildren()) {
             for (Potential p : this.potentiallines) canvas.getChildren().remove(p);
@@ -520,5 +577,42 @@ public class uiController {
             }
             this.updating = false;
         }
+    }
+
+    void reload() {
+        App.loading = true;
+        Temp.reload = true;
+
+        Temp.charges = this.charges;
+        Temp.fieldlines = this.fieldlines;
+        Temp.potentiallines = this.potentiallines;
+        Temp.selected = this.selected;
+        Temp.updating = this.updating;
+        Temp.render = this.render;
+        Temp.drawfield = this.drawfield;
+        Temp.drawpotential = this.drawpotential;
+        Temp.mode = this.mode;
+        Temp.locale = this.locale;
+
+        Temp.e_solver = efieldsolver.getSelectionModel().getSelectedIndex();
+        Temp.p_solver = ufieldsolver.getSelectionModel().getSelectedIndex();
+
+        Temp.e_style = efieldlinestyle.getSelectionModel().getSelectedIndex();
+        Temp.p_style = ufieldlinestyle.getSelectionModel().getSelectedIndex();
+
+        Temp.e_weight = efieldlineweight.getValue();
+        Temp.p_weight = ufieldlineweight.getValue();
+
+        App.controller.removeScreen("gui");
+        App.controller.removeScreen("field");
+        App.controller.removeScreen("potential");
+        try {
+            App.controller.addScreen("gui", FXMLLoader.load(getClass().getResource("/gui.fxml"), App.rb));
+            App.controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml"), App.rb));
+            App.controller.addScreen("potential", FXMLLoader.load(getClass().getResource("/potentialparams.fxml"), App.rb));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        App.controller.activate("gui");
     }
 }

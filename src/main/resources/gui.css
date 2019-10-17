@@ -2,3 +2,16 @@
 .dark {
     -fx-base: #303030;
 }
+
+Circle {
+    -fx-border-color: #202020;
+    -fx-border-width: 10px;
+}
+
+Circle:hover {
+    -fx-border-color: #919191;
+}
+
+Circle:focused {
+    -fx-border-color: #f0f0f0;
+}
