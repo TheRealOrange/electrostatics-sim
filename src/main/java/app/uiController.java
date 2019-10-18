@@ -470,7 +470,7 @@ public class uiController {
             ufieldsolver.getSelectionModel().select(Temp.p_solver);
 
             efieldlinestyle.getSelectionModel().select(Temp.e_style);
-            Field.setLineStyle(stroke[Temp.p_style]); Field.setStyle_num(Temp.p_style);
+            Field.setLineStyle(stroke[Temp.e_style]); Field.setStyle_num(Temp.e_style);
             ufieldlinestyle.getSelectionModel().select(Temp.p_style);
             Potential.setLineStyle(stroke[Temp.p_style]); Potential.setStyle_num(Temp.p_style);
 
@@ -616,6 +616,8 @@ public class uiController {
         Temp.e_weight = efieldlineweight.getValue();
         Temp.p_weight = ufieldlineweight.getValue();
 
+        App.model.getConfig().saveConfig(App.model);
+
         App.controller.removeScreen("gui");
         App.controller.removeScreen("field");
         App.controller.removeScreen("potential");
@@ -627,5 +629,6 @@ public class uiController {
             e.printStackTrace();
         }
         App.controller.activate("gui");
+        App.model.getConfig().applyConfig(App.model);
     }
 }

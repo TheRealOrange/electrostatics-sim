@@ -54,12 +54,20 @@ public abstract class utility {
     }
 
     static void bind(TextField tf, Slider s, int dp) {
-        tf.setOnAction(e->s.setValue(Double.parseDouble(tf.getText())));
+        tf.textProperty().addListener(e->{
+            double d = Double.parseDouble(tf.getText());
+            if (d >= s.getMin() && d <= s.getMax())
+                s.setValue(Double.parseDouble(tf.getText()));
+        });
         s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%." + dp + "f", n)));
     }
 
     static void bindInt(TextField tf, Slider s) {
-        tf.setOnAction(e->s.setValue(Integer.parseInt(tf.getText())));
+        tf.textProperty().addListener(e->{
+            int d = Integer.parseInt(tf.getText());
+            if (d >= s.getMin() && d <= s.getMax())
+                s.setValue(Double.parseDouble(tf.getText()));
+        });
         s.valueProperty().addListener((b,o,n)->tf.setText(String.format("%d", n.intValue())));
     }
 

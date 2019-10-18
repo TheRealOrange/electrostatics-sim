@@ -80,12 +80,12 @@ public class potentialparamController {
         assert stepcount != null : "fx:id=\"stepcount\" was not injected: check your FXML file 'potentialparams.fxml'.";
         assert stepcount_slider != null : "fx:id=\"stepcount_slider\" was not injected: check your FXML file 'potentialparams.fxml'.";
 
-        int[] stepcountadaptive_val = new int[]{1, 50000, 2000};
-        int[] stepcount_val = new int[]{1, 50000, 20000};
+        int[] stepcountadaptive_val = new int[]{1, 100000, 40000};
+        int[] stepcount_val = new int[]{1, 100000, 40000};
 
-        double[] precisionadaptive_val = new double[]{0.0001, 0.01, 0.001};
-        double[] stepadaptive_val = new double[]{0.001, 0.1, 0.01};
-        double[] step_val = new double[]{0.01, 1, 0.1};
+        double[] precisionadaptive_val = new double[]{0.01, 10, 1};
+        double[] stepadaptive_val = new double[]{0.01, 10, 1};
+        double[] step_val = new double[]{0.01, 10, 0.1};
 
         stepcountadaptive.setTextFormatter(utility.intFormatter(stepcountadaptive_val[0], stepcountadaptive_val[1], stepcountadaptive_val[2]));
         stepcount.setTextFormatter(utility.intFormatter(stepcount_val[0], stepcount_val[1], stepcount_val[2]));
@@ -98,8 +98,8 @@ public class potentialparamController {
         utility.initSliderInt(stepcountadaptive_slider, stepcountadaptive_val[0], stepcountadaptive_val[1], 1);
         utility.initSliderInt(stepcount_slider, stepcount_val[0], stepcount_val[1], 1);
 
-        utility.initSlider(precisionadaptive_slider, precisionadaptive_val[0], precisionadaptive_val[1], 0.0001);
-        utility.initSlider(stepadaptive_slider, stepadaptive_val[0], stepadaptive_val[1], 0.001);
+        utility.initSlider(precisionadaptive_slider, precisionadaptive_val[0], precisionadaptive_val[1], 0.01);
+        utility.initSlider(stepadaptive_slider, stepadaptive_val[0], stepadaptive_val[1], 0.01);
         utility.initSlider(step_slider, step_val[0], step_val[1], 0.01);
 
         utility.bindInt(stepcountadaptive, stepcountadaptive_slider);

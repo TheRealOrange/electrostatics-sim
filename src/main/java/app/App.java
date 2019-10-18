@@ -43,7 +43,7 @@ public class App extends Application {
         primaryStage.setResizable(false);
         primarystage = primaryStage;
 
-        primaryStage.setTitle("nonono");
+        primaryStage.setTitle("electrostatics sim");
         primaryStage.setScene(scene);
         //primaryStage.getScene().getStylesheets().add(getClass().getResource("/gui.css").toExternalForm());
 

@@ -28,7 +28,7 @@ public class splashController {
     private Random r = new Random();
     private long prevTime;
     private Boolean load = true;
-    private String[] loadingme = { "obliterating enemies...", "git push --force", "solving navier-stokes...", "proving riemann hypothesis...", "loading...", "eating cookies...", "catching up on sleep...", "burden bear...", "inventing baryons...", "fixing quantum gravity...", "simulating universe...", "failing cs...", "splitting the atom...", "growing potatoes for space colonization...", "making paperclips..." };
+    private String[] loadingme = {/* "obliterating enemies...", "git push --force", "solving navier-stokes...", "proving riemann hypothesis...", "loading...", "eating cookies...", "catching up on sleep...", "burden bear...", "inventing baryons...", "fixing quantum gravity...", "simulating universe...", */"failing cs..."/*, "splitting the atom...", "growing potatoes for space colonization...", "making paperclips..."*/ };
 
     @FXML
     private ResourceBundle resources;

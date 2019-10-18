@@ -105,16 +105,16 @@ public class efieldparamController {
         assert stepcount != null : "fx:id=\"stepcount\" was not injected: check your FXML file 'fieldparams.fxml'.";
         assert stepcount_slider != null : "fx:id=\"stepcount_slider\" was not injected: check your FXML file 'fieldparams.fxml'.";
 
-        int[] resolutionthreshold_val = new int[]{1, 10000, 1000};
-        int[] stepcount_val = new int[]{1, 100000, 10000};
+        int[] resolutionthreshold_val = new int[]{1, 10000, 500};
+        int[] stepcount_val = new int[]{1, 1000000, 15000};
 
         double[] fineprecisionadaptive_val = new double[]{0.1, 100, 1};
-        double[] finestepadaptive_val = new double[]{0.1, 100, 1};
+        double[] finestepadaptive_val = new double[]{0.1, 100, 10};
         double[] finestep_val = new double[]{0.1, 100, 15};
 
-        double[] roughprecisionadaptive_val = new double[]{0.1, 1000, 50};
-        double[] roughstepadaptive_val = new double[]{0.1, 1000, 50};
-        double[] roughstep_val = new double[]{0.1, 1000, 50};
+        double[] roughprecisionadaptive_val = new double[]{0.1, 1000, 80};
+        double[] roughstepadaptive_val = new double[]{0.1, 1000, 200};
+        double[] roughstep_val = new double[]{0.1, 1000, 200};
 
         resolutionthreshold.setTextFormatter(utility.intFormatter(resolutionthreshold_val[0], resolutionthreshold_val[1], resolutionthreshold_val[2]));
         stepcount.setTextFormatter(utility.intFormatter(stepcount_val[0], stepcount_val[1], stepcount_val[2]));
