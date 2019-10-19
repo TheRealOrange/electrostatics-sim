@@ -25,6 +25,7 @@ import math.Vector2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -394,7 +395,7 @@ public class uiController {
         }); ufieldlinestyle.setButtonCell(ufieldlinestyle.getCellFactory().call(null));
 
 
-        String[] lang = {"English", "中文"};
+        String[] lang = { "English", "\u4E2D\u6587"};
 
         language.setItems(FXCollections.observableArrayList(lang));
         language.getSelectionModel().selectedIndexProperty().addListener((ov, value, new_value) -> {
