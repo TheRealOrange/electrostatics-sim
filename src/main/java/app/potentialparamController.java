@@ -109,12 +109,21 @@ public class potentialparamController {
         utility.bind(stepadaptive, stepadaptive_slider, 3);
         utility.bind(step, step_slider, 2);
 
-        stepcountadaptive_slider.setValue(stepcountadaptive_val[2]);
-        stepcount_slider.setValue(stepcount_val[2]);
+        if (!Temp.reload) {
+            stepcountadaptive_slider.setValue(stepcountadaptive_val[2]);
+            stepcount_slider.setValue(stepcount_val[2]);
 
-        precisionadaptive_slider.setValue(precisionadaptive_val[2]);
-        stepadaptive_slider.setValue(stepadaptive_val[2]);
-        step_slider.setValue(step_val[2]);
+            precisionadaptive_slider.setValue(precisionadaptive_val[2]);
+            stepadaptive_slider.setValue(stepadaptive_val[2]);
+            step_slider.setValue(step_val[2]);
+        } else {
+            stepcountadaptive_slider.setValue(App.model.getConfig().getP_num_steps_adaptive());
+            stepcount_slider.setValue(App.model.getConfig().getP_num_steps());
+
+            precisionadaptive_slider.setValue(App.model.getConfig().getP_tolerance());
+            stepadaptive_slider.setValue(App.model.getConfig().getP_step_amt_adaptive());
+            step_slider.setValue(App.model.getConfig().getP_step_amt());
+        }
 
         updateFields();
     }

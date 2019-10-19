@@ -151,16 +151,29 @@ public class efieldparamController {
         utility.bind(roughstepadaptive, roughstepadaptive_slider, 1);
         utility.bind(roughstep, roughstep_slider, 1);
 
-        resolutionthreshold_slider.setValue(resolutionthreshold_val[2]);
-        stepcount_slider.setValue(stepcount_val[2]);
+        if (!Temp.reload) {
+            resolutionthreshold_slider.setValue(resolutionthreshold_val[2]);
+            stepcount_slider.setValue(stepcount_val[2]);
 
-        fineprecisionadaptive_slider.setValue(fineprecisionadaptive_val[2]);
-        finestepadaptive_slider.setValue(finestepadaptive_val[2]);
-        finestep_slider.setValue(finestep_val[2]);
+            fineprecisionadaptive_slider.setValue(fineprecisionadaptive_val[2]);
+            finestepadaptive_slider.setValue(finestepadaptive_val[2]);
+            finestep_slider.setValue(finestep_val[2]);
 
-        roughprecisionadaptive_slider.setValue(roughprecisionadaptive_val[2]);
-        roughstepadaptive_slider.setValue(roughstepadaptive_val[2]);
-        roughstep_slider.setValue(roughstep_val[2]);
+            roughprecisionadaptive_slider.setValue(roughprecisionadaptive_val[2]);
+            roughstepadaptive_slider.setValue(roughstepadaptive_val[2]);
+            roughstep_slider.setValue(roughstep_val[2]);
+        } else {
+            resolutionthreshold_slider.setValue(App.model.getConfig().getE_fine_compute_distance());
+            stepcount_slider.setValue(App.model.getConfig().getE_num_steps());
+
+            fineprecisionadaptive_slider.setValue(App.model.getConfig().getE_fine_precision_adaptive());
+            finestepadaptive_slider.setValue(App.model.getConfig().getE_fine_step_adaptive());
+            finestep_slider.setValue(App.model.getConfig().getE_fine_step());
+
+            roughprecisionadaptive_slider.setValue(App.model.getConfig().getE_rough_precision_adaptive());
+            roughstepadaptive_slider.setValue(App.model.getConfig().getE_rough_step_adaptive());
+            roughstep_slider.setValue(App.model.getConfig().getE_rough_step());
+        }
 
         updateFields();
     }

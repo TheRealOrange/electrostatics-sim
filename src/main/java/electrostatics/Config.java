@@ -121,6 +121,9 @@ public class Config implements Serializable {
 
         model.setLinedensity(e_num);
         model.setPotentialint(p_int);
+
+        model.setEfieldsolver_id(e_solver_id);
+        model.setUfieldsolver_id(p_solver_id);
     }
 
     public int getE_fine_compute_distance() {

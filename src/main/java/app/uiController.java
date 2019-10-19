@@ -194,7 +194,7 @@ public class uiController {
                 App.model = new SystemModel(savedFile);
                 ufieldsolver.getSelectionModel().select(0);
                 ufieldsolver.getSelectionModel().select(1);
-                ufieldsolver.getSelectionModel().select(App.model.getUfieldsolver_id());
+                ufieldsolver.getSelectionModel().select(App.model.getConfig().getP_solver_id());
 
                 ufieldlineweight.getValueFactory().setValue(1);
                 ufieldlineweight.getValueFactory().setValue(2);
@@ -206,7 +206,7 @@ public class uiController {
 
                 efieldsolver.getSelectionModel().select(0);
                 efieldsolver.getSelectionModel().select(1);
-                efieldsolver.getSelectionModel().select(App.model.getEfieldsolver_id());
+                efieldsolver.getSelectionModel().select(App.model.getConfig().getE_solver_id());
 
                 efieldlineweight.getValueFactory().setValue(1);
                 efieldlineweight.getValueFactory().setValue(2);
@@ -215,6 +215,18 @@ public class uiController {
                 efieldlinestyle.getSelectionModel().select(0);
                 efieldlinestyle.getSelectionModel().select(1);
                 efieldlinestyle.getSelectionModel().select(App.model.getConfig().getE_style());
+
+                Temp.reload = true;
+                App.controller.removeScreen("field");
+                App.controller.removeScreen("potential");
+
+                try {
+                    App.controller.addScreen("field", FXMLLoader.load(getClass().getResource("/fieldparams.fxml"), App.rb));
+                    App.controller.addScreen("potential", FXMLLoader.load(getClass().getResource("/potentialparams.fxml"), App.rb));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Temp.reload = false;
 
                 for (Charge c : this.charges){
                     canvas.getChildren().remove(c);
@@ -593,10 +605,7 @@ public class uiController {
         }
     }
 
-    private void reload() {
-        App.loading = true;
-        Temp.reload = true;
-
+    private void saveSettings() {
         Temp.fieldlines = this.fieldlines;
         Temp.potentiallines = this.potentiallines;
         Temp.selected = this.selected;
@@ -615,6 +624,13 @@ public class uiController {
 
         Temp.e_weight = efieldlineweight.getValue();
         Temp.p_weight = ufieldlineweight.getValue();
+    }
+
+    private void reload() {
+        App.loading = true;
+        Temp.reload = true;
+
+        saveSettings();
 
         App.model.getConfig().saveConfig(App.model);
 
