@@ -2,10 +2,7 @@ package app;
 
 import canvas.InfiniteCanvas;
 import canvas.Movable;
-import electrostatics.ElectricFieldLine;
-import electrostatics.Particle;
-import electrostatics.PotentialFieldLine;
-import electrostatics.SystemModel;
+import electrostatics.*;
 import elements.Charge;
 import elements.Field;
 import elements.Potential;
@@ -190,6 +187,8 @@ public class uiController {
         fileChooser.setInitialFileName("electrostatics.sim");
         File savedFile = fileChooser.showOpenDialog(savefile.getScene().getWindow());
 
+        Config temp = new Config(App.model);
+
         if (savedFile != null) {
             try {
                 App.model = new SystemModel(savedFile);
@@ -239,7 +238,14 @@ public class uiController {
                 display();
                 render = tmp;
             } catch(IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setTitle("Error loading file");
+                a.setHeaderText("Invalid file");
+                a.setContentText("The file you have selected is either invalid or corrupt, please reselect");
+                if (disptheme.getSelectionModel().getSelectedIndex() == 1) a.getDialogPane().getStylesheets().add("/dark.css");
+                // show the dialog
+                a.show();
+                temp.applyConfig(App.model);
             }
         }
     }

@@ -6,6 +6,7 @@ import elements.Potential;
 import java.io.Serializable;
 
 public class Config implements Serializable {
+    private int particle_id;
     private int e_fine_compute_distance;
 
     private double e_fine_precision_adaptive;
@@ -38,7 +39,8 @@ public class Config implements Serializable {
     private int e_solver_id;
     private int p_solver_id;
 
-    public Config(int e_fine_compute_distance, double e_fine_precision_adaptive, double e_fine_step_adaptive, double e_rough_step_adaptive, double e_rough_precision_adaptive, double e_fine_step, double e_rough_step, int e_num_steps, int p_num_steps_adaptive, double p_step_amt_adaptive, int p_num_steps, double p_step_amt, double p_tolerance, int p_weight, int p_style, int e_weight, int e_style, int e_num, double p_int, int e_solver_id, int p_solver_id) {
+    public Config(int particle_id, int e_fine_compute_distance, double e_fine_precision_adaptive, double e_fine_step_adaptive, double e_rough_step_adaptive, double e_rough_precision_adaptive, double e_fine_step, double e_rough_step, int e_num_steps, int p_num_steps_adaptive, double p_step_amt_adaptive, int p_num_steps, double p_step_amt, double p_tolerance, int p_weight, int p_style, int e_weight, int e_style, int e_num, double p_int, int e_solver_id, int p_solver_id) {
+        this.particle_id = particle_id;
         this.e_fine_compute_distance = e_fine_compute_distance;
         this.e_fine_precision_adaptive = e_fine_precision_adaptive;
         this.e_fine_step_adaptive = e_fine_step_adaptive;
@@ -63,11 +65,12 @@ public class Config implements Serializable {
     }
 
     public Config(SystemModel model) {
-        this(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0, 0);
+        this(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0, 0);
         saveConfig(model);
     }
 
     public void saveConfig(SystemModel model) {
+        particle_id = Particle.ID;
         e_fine_compute_distance = ElectricFieldLine.getFine_compute_distance();
         e_num_steps = ElectricFieldLine.getNum_steps();
 
@@ -100,6 +103,7 @@ public class Config implements Serializable {
     }
 
     public void applyConfig(SystemModel model) {
+        Particle.ID = particle_id;
         ElectricFieldLine.setFine_compute_distance(e_fine_compute_distance);
         ElectricFieldLine.setNum_steps(e_num_steps);
 
